@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bitacorap🤖 - Ruleta y Grupos v4 (MEJORADO)</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- CONTENIDO HTML EXTRAÍDO -->
+
+<!-- HOME DASHBOARD MODERNO -->
+<div id="home">
+  <!-- Topbar Minimalista -->
+  <div class="fb" style="margin-bottom:24px; align-items:center;">
+    <div class="flex" style="gap:15px; align-items:center;">
+      <div class="home-title">📘 Bitacorap🤖</div>
+    </div>
+    <div class="master-date-nav" style="background:var(--surface);">
+      <button class="btn btn-secondary btn-sm" onclick="changeMasterDay(-1)" style="padding: 4px 8px;">◀</button>
+      <div class="master-date-chip">
+        📅 <span id="home-date-display"></span>
+        <input type="date" id="home-date-picker" style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer;" onchange="setMasterDate(this.value)">
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="changeMasterDay(1)" style="padding: 4px 8px;">▶</button>
+      <button class="btn btn-primary btn-sm" onclick="setMasterDateHoy()" id="btn-home-hoy" style="display:none; padding: 4px 8px;">Hoy</button>
+      <button class="btn btn-secondary btn-sm" onclick="openSettingsModal()" style="margin-left:8px;">⚙️ Conf.</button>
+    </div>
+  </div>
+
+  <!-- Banner Bienvenida -->
+  <div class="welcome-banner">
+    <div style="position: relative; z-index: 2;">
+      <h1 style="font-size: 1.6rem; font-weight: 900; margin-bottom: 4px; color: var(--text);">¡Hola, Docente! 👋</h1>
+      <p style="font-size: 0.9rem; color: var(--muted); margin: 0;">Bienvenido a tu panel principal. ¿Qué grupo gestionaremos hoy?</p>
+    </div>
+    <div style="position: relative; z-index: 2;">
+      <button class="btn btn-primary" style="padding: 12px 24px; font-size: 0.9rem; box-shadow: 0 4px 15px rgba(14,165,233,0.3);" onclick="openModal('mNewGroup')">➕ Nuevo Grupo</button>
+    </div>
+  </div>
+
+  <!-- Contenedor Principal Dashboard -->
+  <div class="dashboard-grid">
+    
+    <!-- Columna Izquierda: Grupos -->
+    <div class="dashboard-main">
+      <div class="fb" style="margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+        <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+          <div style="font-size: 1.05rem; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 8px;">
+            📚 Mis Grupos 
+            <span id="home-groups-count" style="background:var(--surface2); color:var(--muted); padding:2px 8px; border-radius:12px; font-size:0.75rem;">0</span>
+          </div>
+          <button onclick="openMisEstudiantes()" style="background:rgba(244,114,182,0.1); border:1.5px solid #ec4899; color:#f472b6; border-radius:10px; padding:7px 16px; font-size:0.8rem; font-weight:900; cursor:pointer; font-family:'Poppins',sans-serif; display:flex; align-items:center; gap:7px; transition:all 0.15s; letter-spacing:0.3px; text-transform:uppercase;" onmouseover="this.style.background='rgba(244,114,182,0.2)'" onmouseout="this.style.background='rgba(244,114,182,0.1)'">
+            👨‍👩‍👧 Mis Estudiantes
+          </button>
+          <button onclick="openReunionPadres()" style="background:rgba(245,158,11,0.1); border:1.5px solid #f59e0b; color:#fbbf24; border-radius:10px; padding:7px 16px; font-size:0.8rem; font-weight:900; cursor:pointer; font-family:'Poppins',sans-serif; display:flex; align-items:center; gap:7px; transition:all 0.15s; letter-spacing:0.3px; text-transform:uppercase;" onmouseover="this.style.background='rgba(245,158,11,0.2)'" onmouseout="this.style.background='rgba(245,158,11,0.1)'">
+            🤝 Reunión de Padres
+          </button>
+        </div>
+      </div>
+      <div id="home-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 18px;"></div>
+    </div>
+
+    <!-- Columna Derecha: Acceso rápido y Herramientas -->
+    <div class="dashboard-side" style="display: flex; flex-direction: column; gap: 20px;">
+      
+      <!-- Panel de Herramientas -->
+      <div class="panel" style="margin: 0; padding: 22px;">
+        <div style="font-size: 0.82rem; font-weight: 800; color: var(--muted); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Acceso Rápido</div>
+        
+        <div class="side-tool-card" onclick="openSala()" style="background: rgba(245, 158, 11, 0.05); border-color: rgba(245, 158, 11, 0.2);">
+          <div style="font-size: 2.2rem; filter: drop-shadow(0 2px 4px rgba(245,158,11,0.2));">☕</div>
+          <div>
+            <div style="font-weight: 800; color: var(--yellow); font-size: 0.95rem;">Sala de Docente</div>
+            <div style="font-size: 0.75rem; color: var(--muted); line-height: 1.3; margin-top:2px;">Agenda, colegiado y citas</div>
+          </div>
+        </div>
+
+        <div class="side-tool-card" onclick="openAiGenerator()" style="background: rgba(139, 92, 246, 0.05); border-color: rgba(139, 92, 246, 0.2); margin-bottom:0;">
+          <div style="font-size: 2.2rem; filter: drop-shadow(0 2px 4px rgba(139,92,246,0.2));">🧠</div>
+          <div>
+            <div style="font-weight: 800; color: #a78bfa; font-size: 0.95rem;">Generar Sesiones</div>
+            <div style="font-size: 0.75rem; color: var(--muted); line-height: 1.3; margin-top:2px;">Asistente pedagógico IA</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Widget de Resumen -->
+      <div class="panel" style="margin: 0; padding: 22px; background: linear-gradient(180deg, var(--surface) 0%, rgba(30,41,59,0.4) 100%);">
+        <div style="font-size: 0.82rem; font-weight: 800; color: var(--muted); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Resumen del Día</div>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; background: var(--surface2); padding: 10px 14px; border-radius: 8px;">
+           <span style="font-size: 0.8rem; font-weight: 700; color: var(--text);">🏫 Clases a dictar:</span>
+           <span style="font-size: 1.1rem; font-weight: 900; color: var(--green);" id="home-classes-today">0</span>
+        </div>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; background: var(--surface2); padding: 10px 14px; border-radius: 8px;">
+           <span style="font-size: 0.8rem; font-weight: 700; color: var(--text);">📅 Eventos en Sala:</span>
+           <span style="font-size: 1.1rem; font-weight: 900; color: var(--yellow);" id="home-events-today">0</span>
+        </div>
+      </div>
+
+      <!-- Panel de Copias de Seguridad MEJORADO -->
+      <div class="panel" style="margin: 0; padding: 22px;">
+        <div style="font-size: 0.82rem; font-weight: 800; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">💾 Copias de Seguridad</div>
+
+        <!-- Estado del autoguardado -->
+        <div id="backup-status-bar" style="display:flex; align-items:center; gap:8px; background:var(--surface2); border-radius:8px; padding:8px 12px; margin-bottom:12px; border:1px solid var(--border);">
+          <span id="backup-status-dot" style="width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0;"></span>
+          <span id="backup-status-text" style="font-size:0.72rem; color:var(--muted); font-weight:700;">Cargando estado…</span>
+        </div>
+
+        <!-- Snapshots internos -->
+        <div style="font-size:0.7rem; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:6px;">Puntos de Restauración Automáticos</div>
+        <div id="snapshots-list" style="margin-bottom:12px;"></div>
+
+        <!-- Botones principales -->
+        <input type="file" id="import-file" style="display:none" accept=".json" onchange="importarDatos(event)">
+        <button class="btn btn-secondary btn-sm" onclick="exportarDatos()" style="width:100%; justify-content:center; margin-bottom:6px; padding: 9px; background:rgba(16,185,129,0.12); border-color:var(--accent); color:var(--accent);">💾 Exportar JSON (Backup Completo)</button>
+        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('import-file').click()" style="width:100%; justify-content:center; padding: 9px; margin-bottom:14px;">📂 Importar desde Archivo</button>
+
+        <!-- ☁️ GOOGLE DRIVE SYNC PANEL -->
+        <div style="border-top:1px solid var(--border); padding-top:14px;">
+          <div style="font-size:0.7rem; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:8px;">☁️ Sincronización con Google Drive</div>
+
+          <!-- Estado de conexión -->
+          <div id="gdrive-status-bar" style="display:flex; align-items:center; gap:8px; background:var(--surface2); border-radius:8px; padding:8px 12px; margin-bottom:8px; border:1px solid var(--border);">
+            <span id="gdrive-dot" style="width:8px;height:8px;border-radius:50%;background:var(--surface3);flex-shrink:0;display:inline-block;"></span>
+            <span id="gdrive-status-text" style="font-size:0.72rem; color:var(--muted); font-weight:700; flex:1;">No conectado</span>
+          </div>
+
+          <!-- Último sync -->
+          <div id="gdrive-last-sync" style="font-size:0.68rem; color:var(--muted); margin-bottom:10px; text-align:center; display:none;">
+            Último sync: <span id="gdrive-last-sync-time">—</span>
+          </div>
+
+          <!-- Botón conectar / desconectar -->
+          <button id="gdrive-connect-btn" onclick="gdriveConnect()" style="width:100%; justify-content:center; margin-bottom:6px; padding: 9px; background:rgba(66,133,244,0.12); border:1.5px solid #4285f4; border-radius:8px; color:#4285f4; font-family:'Poppins',sans-serif; font-size:0.76rem; font-weight:800; cursor:pointer; display:flex; align-items:center; gap:8px; transition:all 0.15s; text-transform:uppercase; letter-spacing:0.4px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            Conectar con Google
+          </button>
+
+          <button id="gdrive-sync-now-btn" onclick="gdriveSyncNow()" style="width:100%; justify-content:center; margin-bottom:6px; padding: 9px; background:rgba(66,133,244,0.08); border:1.5px solid rgba(66,133,244,0.3); border-radius:8px; color:#4285f4; font-family:'Poppins',sans-serif; font-size:0.76rem; font-weight:800; cursor:pointer; display:none; align-items:center; gap:8px; transition:all 0.15s; text-transform:uppercase; letter-spacing:0.4px;">
+            ☁️ Guardar en Drive Ahora
+          </button>
+
+          <button id="gdrive-restore-btn" onclick="gdriveRestore()" style="width:100%; justify-content:center; margin-bottom:6px; padding: 9px; background:rgba(16,185,129,0.08); border:1.5px solid rgba(16,185,129,0.3); border-radius:8px; color:var(--accent); font-family:'Poppins',sans-serif; font-size:0.76rem; font-weight:800; cursor:pointer; display:none; align-items:center; gap:8px; transition:all 0.15s; text-transform:uppercase; letter-spacing:0.4px;">
+            ♻️ Restaurar desde Drive
+          </button>
+
+          <button id="gdrive-disconnect-btn" onclick="gdriveDisconnect()" style="width:100%; justify-content:center; padding: 9px; border:1.5px solid var(--border); border-radius:8px; color:var(--muted); background:transparent; font-family:'Poppins',sans-serif; font-size:0.72rem; font-weight:800; cursor:pointer; display:none; transition:all 0.15s; text-transform:uppercase; letter-spacing:0.4px;">
+            Desconectar cuenta
+          </button>
+
+          <!-- Nota de configuración -->
+          <div id="gdrive-setup-note" style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-radius:8px; padding:10px 12px; margin-top:8px;">
+            <div style="font-size:0.7rem; font-weight:800; color:var(--yellow); margin-bottom:4px;">⚙️ Configuración requerida</div>
+            <div style="font-size:0.65rem; color:var(--muted); line-height:1.5;">
+              Para usar Google Drive necesitas ingresar tu <strong style="color:var(--text);">Client ID</strong> en Configuración (⚙️ arriba). 
+              <a href="https://console.cloud.google.com/" target="_blank" style="color:var(--primary-light); font-weight:800;">Ver guía completa →</a>
+            </div>
+          </div>
+        </div>
+        <!-- FIN GOOGLE DRIVE SYNC PANEL -->
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MIS ESTUDIANTES VIEW -->
+<div id="mis-estudiantes-view" style="display:none;">
+  <div class="topbar" style="position:sticky; top:0; z-index:100;">
+    <div class="topbar-left">
+      <div class="group-title" style="color:#f472b6;">👨‍👩‍👧 Mis Estudiantes</div>
+      <span style="font-size:0.75rem; color:var(--muted); font-weight:600;">Directorio familiar · Teléfonos · Responsables de firma</span>
+    </div>
+    <button class="btn btn-secondary btn-sm" onclick="goHome()">← Volver al Inicio</button>
+  </div>
+  <div class="mis-est-view">
+    <div style="background:rgba(244,114,182,0.07); border:1px solid rgba(236,72,153,0.25); border-radius:var(--radius); padding:14px 18px; margin-bottom:20px; display:flex; align-items:flex-start; gap:12px;">
+      <span style="font-size:1.4rem;">ℹ️</span>
+      <div>
+        <div style="font-size:0.82rem; font-weight:800; color:#f472b6; margin-bottom:3px;">Directorio Familiar Completo</div>
+        <div style="font-size:0.76rem; color:var(--muted); line-height:1.4;">Registra los datos de contacto de papá, mamá y/o apoderado. Marca quién es el <strong style="color:var(--yellow);">Responsable Principal</strong> para firmas de autorizaciones y comunicados oficiales.</div>
+      </div>
+    </div>
+    <div id="mis-est-content"></div>
+  </div>
+</div>
+
+<!-- VISTA REUNIÓN DE PADRES -->
+<div id="reunion-padres-view" style="display:none;">
+  <div class="topbar" style="position:sticky; top:0; z-index:100;">
+    <div class="topbar-left">
+      <div class="group-title" style="color:#fbbf24;">🤝 Reunión de Padres de Familia</div>
+      <span style="font-size:0.75rem; color:var(--muted); font-weight:600;">Asistencia · Temas · Acuerdos · Evidencias</span>
+    </div>
+    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+      <button class="btn btn-primary btn-sm" onclick="abrirModalNuevaReunion()" style="background:var(--yellow); border-color:var(--yellow); color:#000;">➕ Nueva Reunión</button>
+      <button class="btn btn-secondary btn-sm" onclick="goHome()">← Volver al Inicio</button>
+    </div>
+  </div>
+  <div class="reunion-view">
+    <!-- Banner info -->
+    <div class="reunion-header-banner">
+      <span style="font-size:1.5rem;">📋</span>
+      <div>
+        <div style="font-size:0.85rem; font-weight:800; color:#fbbf24; margin-bottom:3px;">Seguimiento de Reuniones con Padres y Apoderados</div>
+        <div style="font-size:0.76rem; color:var(--muted); line-height:1.5;">Registra la asistencia de padres/madres/apoderados por alumno, los temas tratados, los acuerdos tomados y adjunta fotos como evidencia de la sesión. Las reuniones se vinculan automáticamente a los datos familiares ya registrados.</div>
+      </div>
+    </div>
+
+    <!-- Selector de grupo -->
+    <div class="panel" style="margin-bottom:16px; padding:16px 20px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+      <label style="font-size:0.8rem; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; flex-shrink:0;">Grupo / Sección</label>
+      <select id="reunion-grupo-sel" onchange="renderReunionList()" style="flex:1; min-width:200px; background:var(--surface2); border:1.5px solid var(--border); border-radius:8px; padding:8px 12px; color:var(--text); font-family:'Poppins',sans-serif; font-size:0.84rem; font-weight:700; outline:none;"></select>
+      <div id="reunion-global-stats" style="display:flex; gap:10px; flex-wrap:wrap;"></div>
+    </div>
+
+    <!-- CSS Kanban inline -->
+    <style>
+    .kanban-board { display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; margin-top:10px; }
+    @media(max-width:680px){ .kanban-board { grid-template-columns: 1fr; } }
+    .kanban-col { background:var(--surface2); border-radius:12px; padding:12px; min-height:80px; }
+    .kanban-col-header { font-size:0.72rem; font-weight:900; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px; display:flex; align-items:center; gap:6px; }
+    .kh-pendiente { color:var(--yellow); }
+    .kh-proceso   { color:var(--primary-light); }
+    .kh-resuelto  { color:var(--accent); }
+    .kanban-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:8px 12px; margin-bottom:7px; font-size:0.79rem; color:var(--text); line-height:1.4; display:flex; align-items:flex-start; justify-content:space-between; gap:6px; cursor:grab; transition:box-shadow 0.15s, border-color 0.15s; }
+    .kanban-card:hover { border-color:var(--primary); box-shadow:0 3px 12px rgba(14,165,233,0.12); }
+    .kanban-card.dragging { opacity:0.5; cursor:grabbing; }
+    .kanban-col.drag-over { border:2px dashed var(--primary); background:rgba(14,165,233,0.06); }
+    .kanban-card-actions { display:flex; gap:3px; flex-shrink:0; }
+    .kc-btn { background:none; border:none; cursor:pointer; color:var(--muted); font-size:0.75rem; padding:2px 4px; border-radius:4px; transition:color 0.1s; }
+    .kc-btn:hover { color:var(--red); }
+    .kc-btn-mv { color:var(--primary); }
+    .kc-btn-mv:hover { color:var(--primary-light); }
+    .kanban-add-area { margin-top:8px; display:flex; gap:6px; }
+    .kanban-add-area input { flex:1; background:var(--surface3); border:1.5px solid var(--border); border-radius:7px; color:var(--text); padding:6px 10px; font-size:0.78rem; font-family:'Poppins',sans-serif; outline:none; }
+    .kanban-add-area input:focus { border-color:var(--primary); }
+    .kanban-add-btn { background:var(--primary); color:#fff; border:none; border-radius:7px; padding:6px 10px; font-size:0.75rem; font-weight:800; cursor:pointer; font-family:'Poppins',sans-serif; }
+    .kanban-add-btn:hover { background:var(--primary-light); }
+    </style>
+
+    <!-- Lista de reuniones -->
+    <div id="reunion-list-container">
+      <div style="text-align:center; padding:50px 20px; color:var(--muted);">
+        <div style="font-size:2.5rem; margin-bottom:12px;">🤝</div>
+        <div style="font-size:0.9rem; font-weight:700;">Selecciona un grupo para ver sus reuniones</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DETALLE DE REUNIÓN -->
+<div id="reunion-detalle-view" style="display:none;">
+  <div class="topbar" style="position:sticky; top:0; z-index:100;">
+    <div class="topbar-left">
+      <div class="group-title" style="color:#fbbf24;" id="reunion-detalle-title">📋 Reunión</div>
+      <span id="reunion-detalle-fecha" style="font-size:0.78rem; color:var(--muted); font-weight:600;"></span>
+    </div>
+    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+      <button class="btn btn-secondary btn-sm" style="background:rgba(245,158,11,0.1); border-color:#f59e0b; color:#fbbf24;" onclick="abrirEditarReunion()">✏️ Editar Reunión</button>
+      <button class="btn btn-secondary btn-sm" onclick="openReunionPadres()">← Volver a Lista</button>
+    </div>
+  </div>
+  <div class="reunion-view" id="reunion-detalle-content"></div>
+</div>
+
+<!-- MODAL NUEVA / EDITAR REUNIÓN -->
+<div class="modal-overlay" id="mNuevaReunion">
+  <div class="modal" style="max-width:560px;">
+    <div class="modal-title" style="color:#fbbf24;" id="mNuevaReunion-title">🤝 Nueva Reunión</div>
+
+    <div class="form-group">
+      <label>Grupo / Sección</label>
+      <select id="mnr-grupo" style="background:var(--surface2); border:1.5px solid var(--border); border-radius:8px; padding:8px 12px; color:var(--text); font-family:'Poppins',sans-serif; font-size:0.84rem; width:100%; outline:none;"></select>
+    </div>
+    <div class="grid-2">
+      <div class="form-group" style="margin:0;">
+        <label>Nombre / Asunto de la Reunión</label>
+        <input type="text" id="mnr-titulo" placeholder="Ej: Reunión 1er Trimestre">
+      </div>
+      <div class="form-group" style="margin:0;">
+        <label>Fecha</label>
+        <input type="date" id="mnr-fecha">
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:10px;">
+      <div class="form-group" style="margin:0;">
+        <label>Hora</label>
+        <input type="time" id="mnr-hora">
+      </div>
+      <div class="form-group" style="margin:0;">
+        <label>Lugar</label>
+        <input type="text" id="mnr-lugar" placeholder="Ej: Aula 2B, Dirección...">
+      </div>
+    </div>
+    <div class="form-group" style="margin-top:10px;">
+      <label>Estado</label>
+      <select id="mnr-estado" style="background:var(--surface2); border:1.5px solid var(--border); border-radius:8px; padding:8px 12px; color:var(--text); font-family:'Poppins',sans-serif; font-size:0.84rem; width:100%; outline:none;">
+        <option value="pendiente">⏳ Pendiente</option>
+        <option value="realizada">✅ Realizada</option>
+        <option value="cancelada">❌ Cancelada</option>
+      </select>
+    </div>
+
+    <!-- TEMAS A TRATAR (solo "Por Tratar" en modal) -->
+    <div class="form-group" style="margin-top:14px;">
+      <label style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
+        📌 Temas a Tratar
+        <span style="font-size:0.65rem; font-weight:700; color:var(--muted); font-style:italic;">(se podrán mover en el tablero desde el detalle)</span>
+      </label>
+      <div id="mnr-kanban-board" style="display:flex;flex-direction:column;gap:0;">
+        <div class="kanban-col" id="mnr-col-pendiente" style="width:100%;">
+          <div class="kanban-col-header kh-pendiente">⏳ Por Tratar <span id="mnr-cnt-pendiente" style="background:rgba(245,158,11,0.15);padding:1px 7px;border-radius:20px;">0</span></div>
+          <div id="mnr-cards-pendiente"></div>
+          <div class="kanban-add-area">
+            <input type="text" id="mnr-inp-pendiente" placeholder="Agregar tema..." onkeydown="if(event.key==='Enter'){event.preventDefault();mnrKanbanAdd('pendiente');}">
+            <button class="kanban-add-btn" onclick="mnrKanbanAdd('pendiente')">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <input type="hidden" id="mnr-edit-id" value="">
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" id="mnr-btn-delete" onclick="eliminarReunion()" style="display:none; margin-right:auto;">🗑 Eliminar</button>
+      <button class="btn btn-secondary" onclick="closeModal('mNuevaReunion')">Cancelar</button>
+      <button class="btn" style="background:var(--yellow); color:#000; border:none;" onclick="guardarReunion()">💾 Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FOTO LIGHTBOX -->
+<div class="foto-lightbox" id="fotoLightbox" style="display:none;" onclick="cerrarLightbox()">
+  <img id="fotoLightboxImg" src="" alt="Evidencia">
+</div>
+
+<!-- VISTA AI (GENERADOR SESIONES) -->
+<div id="ai-view" style="display:none; padding: 20px 24px; max-width: 1200px; margin: 0 auto;">
+  <div class="topbar" style="margin-bottom: 20px; border-radius: var(--radius);">
+    <div class="topbar-left">
+      <div class="group-title" style="color: #a78bfa;">🧠 Laboratorio IA - Generador de Sesiones</div>
+    </div>
+    <button class="btn btn-secondary btn-sm" onclick="goHome()">← Volver al Inicio</button>
+  </div>
+  
+  <div class="grid-group-config">
+    <div class="panel" style="overflow-y:auto; max-height:calc(100vh - 160px);">
+
+      <!-- BLOQUE 1: DATOS INSTITUCIONALES -->
+      <div class="panel-title">🏫 Datos Institucionales</div>
+      <div class="grid-2" style="margin-bottom:12px;">
+        <div class="form-group" style="margin-bottom:0;">
+          <label>Nombre del Docente</label>
+          <input type="text" id="ai-docente" placeholder="Escribe tu nombre completo" value="Ivan Noe Jalanoca Ticona">
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label>Nombre del Director(a)</label>
+          <input type="text" id="ai-director" placeholder="Nombre del director(a)" value="Juan Carlos Ruiz Villanueva">
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:12px;">
+        <label>Institución Educativa</label>
+        <input type="text" id="ai-ie" placeholder="Ej: I.E. 24 de Junio" value="I.E. 24 de Junio">
+      </div>
+      <div class="form-group" style="margin-bottom:0;">
+        <label>Contexto Local <span style="color:var(--muted); font-weight:500;">(Opcional)</span></label>
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px; background:var(--surface2); border:1.5px solid var(--border); border-radius:8px; padding:8px 12px;">
+          <input type="checkbox" id="ai-usar-contexto-local" style="width:15px;height:15px;accent-color:var(--accent);flex-shrink:0;" onchange="toggleContextoLocal(this)">
+          <label for="ai-usar-contexto-local" style="margin:0; cursor:pointer; font-size:0.8rem; font-weight:700; color:var(--accent);">🏔️ Activar contexto local inyectado (Huayobamba)</label>
+        </div>
+        <input type="text" id="ai-contexto" placeholder="Ej: Mis alumnos viven en una zona rural de Cajamarca.">
+      </div>
+
+      <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;">
+
+      <!-- BLOQUE 2: PARÁMETROS DE CLASE -->
+      <div class="panel-title">📚 Parámetros de la Clase</div>
+
+      <div class="form-group" style="margin-bottom:12px;">
+        <label>Seleccionar Grupo <span style="color:var(--muted); font-weight:500;">(Opcional — importa tus alumnos)</span></label>
+        <select id="ai-group" onchange="autoFillAIGrade()" style="border-color:var(--primary);"></select>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:12px;">
+        <div class="form-group" style="margin-bottom:0;">
+          <label>Nivel Educativo</label>
+          <select id="ai-nivel">
+            <option value="Primaria">Primaria</option>
+            <option value="Secundaria" selected>Secundaria</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label>Grado</label>
+          <select id="ai-grade" onchange="onGradeAreaChange()">
+            <option value="1er Grado">1er Grado</option>
+            <option value="2do Grado">2do Grado</option>
+            <option value="3er Grado">3er Grado</option>
+            <option value="4to Grado">4to Grado</option>
+            <option value="5to Grado" selected>5to Grado</option>
+            <option value="6to Grado">6to Grado</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:12px;">
+        <div class="form-group" style="margin-bottom:0;">
+          <label>Área Curricular</label>
+          <select id="ai-area" onchange="onGradeAreaChange()">
+            <option value="DPCC" selected>DPCC</option>
+            <option value="Comunicación">Comunicación</option>
+            <option value="Matemática">Matemática</option>
+            <option value="Ciencia y Tecnología">Ciencia y Tecnología</option>
+            <option value="Historia, Geografía y Economía">Historia, Geografía y Economía</option>
+            <option value="Educación Física">Educación Física</option>
+            <option value="Arte y Cultura">Arte y Cultura</option>
+            <option value="Inglés">Inglés</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label>Instrumento de Evaluación</label>
+          <select id="ai-instrumento">
+            <option value="Lista de Cotejo" selected>Lista de Cotejo</option>
+            <option value="Rúbrica">Rúbrica</option>
+            <option value="Guía de Observación">Guía de Observación</option>
+            <option value="Prueba Escrita">Prueba Escrita</option>
+            <option value="Portafolio">Portafolio</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- COMPETENCIAS como checkboxes -->
+      <div class="form-group" style="margin-bottom:12px;">
+        <label>Competencia(s) <span style="color:var(--muted); font-weight:500;">(hasta 2 según el área)</span></label>
+        <div id="ai-competencias-box" style="background:var(--surface2); border:1.5px solid var(--border); border-radius:10px; padding:6px 4px; display:flex; flex-direction:column; gap:2px;">
+          <label style="display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:8px; cursor:pointer; transition:background 0.15s;" onmouseover="this.style.background='rgba(14,165,233,0.08)'" onmouseout="this.style.background='transparent'">
+            <input type="checkbox" id="ai-comp-ia" style="width:16px;height:16px;accent-color:var(--accent);flex-shrink:0;" checked>
+            <span style="font-size:0.8rem; font-weight:700; color:var(--accent);">Dejar que la IA sugiera la competencia</span>
+          </label>
+          <label style="display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:8px; cursor:pointer; transition:background 0.15s;" onmouseover="this.style.background='rgba(14,165,233,0.08)'" onmouseout="this.style.background='transparent'">
+            <input type="checkbox" id="ai-comp-1" style="width:16px;height:16px;accent-color:var(--primary);flex-shrink:0;">
+            <span style="font-size:0.8rem; font-weight:600;">Construye su identidad</span>
+          </label>
+          <label style="display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:8px; cursor:pointer; transition:background 0.15s;" onmouseover="this.style.background='rgba(14,165,233,0.08)'" onmouseout="this.style.background='transparent'">
+            <input type="checkbox" id="ai-comp-2" style="width:16px;height:16px;accent-color:var(--primary);flex-shrink:0;">
+            <span style="font-size:0.8rem; font-weight:600;">Convive y participa democráticamente en la búsqueda del bien común</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- CAPACIDADES como checkboxes (dinámicas según competencias seleccionadas) -->
+      <div class="form-group" style="margin-bottom:12px;" id="ai-capacidades-section">
+        <label>Capacidades a movilizar</label>
+        <div id="ai-capacidades-box" style="background:var(--surface2); border:1.5px solid var(--border); border-radius:10px; padding:6px 4px; display:flex; flex-direction:column; gap:2px;">
+          <div style="color:var(--muted); font-size:0.78rem; padding:8px 10px; text-align:center; font-style:italic;" id="ai-cap-placeholder">Selecciona una competencia para ver sus capacidades.</div>
+        </div>
+      </div>
+
+      <!-- DESEMPEÑOS A MOVILIZAR -->
+      <div class="form-group" style="margin-bottom:12px;" id="ai-desempenos-section">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+          <label style="margin:0;">Desempeños a movilizar <span style="color:var(--muted); font-weight:500; font-size:0.72rem;">(del grado seleccionado)</span></label>
+          <button type="button" onclick="renderDesempenos()" style="background:var(--surface2); border:1.5px solid var(--primary); color:var(--primary-light); border-radius:7px; padding:3px 10px; font-size:0.7rem; font-weight:800; cursor:pointer; font-family:'Poppins',sans-serif;">🎯 Ver desempeños</button>
+        </div>
+        <div id="ai-desempenos-box" style="background:var(--surface2); border:1.5px solid var(--border); border-radius:10px; padding:8px 10px; font-size:0.78rem; color:var(--muted); font-style:italic; min-height:40px;">
+          Haz clic en "Ver desempeños" para cargar los del grado y área seleccionados.
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:12px;">
+        <div class="form-group" style="margin-bottom:0;">
+          <label>Competencia Transversal <span style="color:var(--muted); font-weight:500;">(opcional)</span></label>
+          <select id="ai-comp-transversal">
+            <option value="">-- Ninguna --</option>
+            <option value="TIC: Se desenvuelve en entornos virtuales">TIC — Entornos Virtuales</option>
+            <option value="Gestiona su aprendizaje de manera autónoma">Aprendizaje Autónomo</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label>Enfoque Transversal <span style="color:var(--muted); font-weight:500;">(opcional)</span></label>
+          <select id="ai-enfoque">
+            <option value="">-- Ninguno --</option>
+            <option value="Enfoque de Derechos">Derechos</option>
+            <option value="Enfoque Inclusivo o de Atención a la diversidad">Inclusivo / Diversidad</option>
+            <option value="Enfoque Intercultural">Intercultural</option>
+            <option value="Enfoque Igualdad de Género">Igualdad de Género</option>
+            <option value="Enfoque Ambiental">Ambiental</option>
+            <option value="Enfoque Orientación al Bien Común">Bien Común</option>
+            <option value="Enfoque Búsqueda de la Excelencia">Excelencia</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- TEMA + selector campos temáticos MINEDU -->
+      <div class="form-group" style="margin-bottom:6px;">
+        <label>Tema Específico de la Sesión</label>
+        <input type="text" id="ai-theme" placeholder="Ej: La identidad personal y su relación con la comunidad">
+      </div>
+      <div id="ai-campos-tematicos-wrap" style="background:var(--surface2); border:1.5px solid var(--border); border-radius:10px; padding:10px 12px; margin-bottom:12px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <input type="checkbox" id="ai-usar-campos" style="width:14px;height:14px;accent-color:var(--primary);flex-shrink:0;" onchange="toggleCamposTematicos(this)">
+          <label for="ai-usar-campos" style="margin:0; font-size:0.78rem; font-weight:700; color:var(--primary-light); cursor:pointer;">📖 Usar campos temáticos inyectados — Libro MINEDU</label>
+        </div>
+        <div id="ai-campos-selects" style="display:none; display:none; flex-direction:column; gap:8px;">
+          <select id="ai-capitulo" onchange="renderSubtemas()" style="font-size:0.8rem;">
+            <option value="">— Seleccionar Capítulo —</option>
+            <option value="1">Cap. 1: Identidad, adolescencia y emociones</option>
+            <option value="2">Cap. 2: Empatía y manejo de conflictos</option>
+            <option value="3">Cap. 3: Sexualidad y género</option>
+            <option value="4">Cap. 4: Identidad, cultura y relaciones interculturales</option>
+            <option value="5">Cap. 5: Reflexión ética, derechos humanos y convivencia</option>
+            <option value="6">Cap. 6: Democracia, Estado y participación ciudadana</option>
+          </select>
+          <div id="ai-subtemas-check-box" style="display:flex; flex-direction:column; gap:4px;"></div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:0;">
+        <div class="form-group" style="margin-bottom:0;">
+          <label>Duración total de la Sesión</label>
+          <select id="ai-duration">
+            <option value="45">45 min (1 h clase)</option>
+            <option value="90" selected>90 min (2 h clase)</option>
+            <option value="135">135 min (3 h clase)</option>
+            <option value="180">180 min (4 h clase)</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:0; display:flex; align-items:flex-end;">
+          <p style="font-size:0.72rem; color:var(--muted); line-height:1.4; margin:0;">En el Word, la tabla de momentos muestra inicio y cierre (10–15 min c/u) y el desarrollo con el tiempo restante según el total elegido.</p>
+        </div>
+      </div>
+
+      <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;">
+
+      <!-- BLOQUE 3: CONTROL PEDAGÓGICO -->
+      <div class="panel-title" style="font-size:0.85rem; color:var(--accent);">🎯 Control Pedagógico <span style="color:var(--muted); font-weight:500; font-size:0.75rem;">(opcional — la IA completa si se deja vacío)</span></div>
+
+      <div class="form-group" style="margin-bottom:12px;">
+        <label>Propósito de la Sesión</label>
+        <textarea id="ai-proposito" rows="2" placeholder="Ej: Los estudiantes reflexionan sobre los elementos que conforman su identidad..."></textarea>
+      </div>
+      <div class="form-group" style="margin-bottom:12px;">
+        <label>Reto / Situación Significativa</label>
+        <textarea id="ai-reto" rows="2" placeholder="Ej: Imaginen que son autores de sus propias historias... ¿Qué necesitan para brillar?"></textarea>
+      </div>
+      <div class="grid-2" style="margin-bottom:0;">
+        <div class="form-group" style="margin-bottom:0;">
+          <label>Evidencia de Aprendizaje</label>
+          <input type="text" id="ai-evidencia" placeholder="Ej: Elabora un folleto de sus raíces...">
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label>Producto Final</label>
+          <input type="text" id="ai-producto" placeholder="Ej: Pasaporte de mi identidad">
+        </div>
+      </div>
+
+      <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;">
+
+      <!-- BLOQUE 4: METODOLOGÍA ACTIVA -->
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+        <span style="font-size:1rem;">🔁</span>
+        <div class="panel-title" style="margin:0; font-size:0.92rem;">Metodología Activa <span style="color:var(--muted); font-weight:500; font-size:0.75rem;">(opcional)</span></div>
+      </div>
+      <p style="font-size:0.75rem; color:var(--muted); margin-bottom:12px; line-height:1.4;">Selecciona una metodología para estructurar tu sesión</p>
+
+      <div id="ai-metodologia-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:4px;">
+
+        <div class="metod-card" data-key="arde" onclick="selectMetodologia(this)"
+          style="background:var(--surface2); border:1.5px solid var(--accent); border-radius:10px; padding:12px 14px; cursor:pointer; transition:all 0.15s; position:relative;">
+          <div style="position:absolute; top:8px; right:8px; background:var(--accent); color:#fff; font-size:0.6rem; font-weight:900; padding:2px 6px; border-radius:4px; text-transform:uppercase; letter-spacing:0.5px;">⭐ Favorita</div>
+          <div style="font-size:0.82rem; font-weight:800; margin-bottom:5px; color:var(--accent); padding-right:52px;">Metodología ARDE</div>
+          <div style="font-size:0.71rem; color:var(--muted); line-height:1.4;">Activación → Reflexión → Demostración → Evaluación. Ciclo activo que fomenta autonomía y pensamiento crítico...</div>
+        </div>
+
+        <div class="metod-card" data-key="abp" onclick="selectMetodologia(this)"
+          style="background:var(--surface2); border:1.5px solid var(--border); border-radius:10px; padding:12px 14px; cursor:pointer; transition:all 0.15s;">
+          <div style="font-size:0.82rem; font-weight:800; margin-bottom:5px;">Aprendizaje Basado en Proyectos (ABP)</div>
+          <div style="font-size:0.71rem; color:var(--muted); line-height:1.4;">Los estudiantes investigan y responden a un problema o desafío auténtico y complejo, creando un producto final...</div>
+        </div>
+
+        <div class="metod-card" data-key="choice_board" onclick="selectMetodologia(this)"
+          style="background:var(--surface2); border:1.5px solid var(--border); border-radius:10px; padding:12px 14px; cursor:pointer; transition:all 0.15s;">
+          <div style="font-size:0.82rem; font-weight:800; margin-bottom:5px;">Choice Board (Tablero de Elección)</div>
+          <div style="font-size:0.71rem; color:var(--muted); line-height:1.4;">Un tablero tipo cuadrícula donde cada celda contiene una actividad diferente. Los estudiantes eligen qué actividad...</div>
+        </div>
+
+        <div class="metod-card" data-key="estaciones" onclick="selectMetodologia(this)"
+          style="background:var(--surface2); border:1.5px solid var(--border); border-radius:10px; padding:12px 14px; cursor:pointer; transition:all 0.15s;">
+          <div style="font-size:0.82rem; font-weight:800; margin-bottom:5px;">Estaciones de Rotación</div>
+          <div style="font-size:0.71rem; color:var(--muted); line-height:1.4;">Los estudiantes rotan por diferentes estaciones de trabajo, cada una con una actividad distinta que aborda...</div>
+        </div>
+
+        <div class="metod-card" data-key="flipped" onclick="selectMetodologia(this)"
+          style="background:var(--surface2); border:1.5px solid var(--border); border-radius:10px; padding:12px 14px; cursor:pointer; transition:all 0.15s;">
+          <div style="font-size:0.82rem; font-weight:800; margin-bottom:5px;">Flipped Learning (Aula Invertida)</div>
+          <div style="font-size:0.71rem; color:var(--muted); line-height:1.4;">Los estudiantes estudian el contenido teórico en casa mediante videos o lecturas, y en clase se dedican a...</div>
+        </div>
+
+        <div class="metod-card" data-key="gamificacion" onclick="selectMetodologia(this)"
+          style="background:var(--surface2); border:1.5px solid var(--border); border-radius:10px; padding:12px 14px; cursor:pointer; transition:all 0.15s;">
+          <div style="font-size:0.82rem; font-weight:800; margin-bottom:5px;">Gamificación</div>
+          <div style="font-size:0.71rem; color:var(--muted); line-height:1.4;">Se incorporan elementos de juego (puntos, niveles, retos, insignias) en el proceso de aprendizaje para aumentar l...</div>
+        </div>
+
+        <div class="metod-card" data-key="learning_menu" onclick="selectMetodologia(this)"
+          style="background:var(--surface2); border:1.5px solid var(--border); border-radius:10px; padding:12px 14px; cursor:pointer; transition:all 0.15s;">
+          <div style="font-size:0.82rem; font-weight:800; margin-bottom:5px;">Learning Menu (Menú de Aprendizaje)</div>
+          <div style="font-size:0.71rem; color:var(--muted); line-height:1.4;">Se ofrece a los estudiantes un menú con opciones de actividades organizadas por niveles (entrada, plato...</div>
+        </div>
+
+        <div class="metod-card" data-key="ninguna" onclick="selectMetodologia(this)"
+          style="background:var(--surface2); border:1.5px solid var(--border); border-radius:10px; padding:12px 14px; cursor:pointer; transition:all 0.15s;">
+          <div style="font-size:0.82rem; font-weight:800; margin-bottom:5px; color:var(--muted);">Sin metodología específica</div>
+          <div style="font-size:0.71rem; color:var(--muted); line-height:1.4;">La IA estructura la sesión con el enfoque pedagógico estándar del CNEB.</div>
+        </div>
+
+      </div>
+      <input type="hidden" id="ai-metodologia" value="arde">
+
+      <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;">
+
+      <!-- BLOQUE 5: EXTRAS + PDF -->
+      <div class="grid-2" style="margin-bottom:16px;">
+        <label style="display:flex; align-items:flex-start; gap:12px; background:var(--surface2); border:1.5px solid var(--border); border-radius:10px; padding:12px 14px; cursor:pointer; transition:border-color 0.15s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+          <input type="checkbox" id="ai-teoria" style="width:18px;height:18px;accent-color:var(--accent);flex-shrink:0;margin-top:2px;">
+          <div>
+            <div style="font-size:0.82rem; font-weight:800;">Generar Teoría del Tema</div>
+            <div style="font-size:0.72rem; color:var(--muted); margin-top:3px;">Genera el contenido teórico de la sesión.</div>
+          </div>
+        </label>
+        <label style="display:flex; align-items:flex-start; gap:12px; background:var(--surface2); border:1.5px solid var(--border); border-radius:10px; padding:12px 14px; cursor:pointer; transition:border-color 0.15s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+          <input type="checkbox" id="ai-ficha" style="width:18px;height:18px;accent-color:var(--accent);flex-shrink:0;margin-top:2px;">
+          <div>
+            <div style="font-size:0.82rem; font-weight:800;">Generar Ficha de Aplicación</div>
+            <div style="font-size:0.72rem; color:var(--muted); margin-top:3px;">Genera preguntas basadas en la teoría y el tema.</div>
+          </div>
+        </label>
+      </div>
+
+      <div style="background:var(--surface2); border:1.5px solid var(--border); border-radius:10px; padding:14px 16px; margin-bottom:14px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+          <span style="font-size:1rem;">💡</span>
+          <span style="font-size:0.88rem; font-weight:800;">Ideas de Subtemas <span style="color:var(--muted); font-weight:500; font-size:0.75rem;">(opcional)</span></span>
+        </div>
+        <p style="font-size:0.75rem; color:var(--muted); margin-bottom:10px; line-height:1.4;">Comparte subtemas que te gustaría incluir. Si te guías de un libro del Estado, escribe los subtemas de esa sesión y la IA los integrará en la clase.</p>
+        <textarea id="ai-subtemas" rows="3" style="width:100%; background:var(--surface3); border:1.5px solid var(--border); border-radius:8px; padding:9px 11px; color:var(--text); font-family:'Poppins',sans-serif; font-size:0.8rem; outline:none; resize:vertical; transition:border-color 0.15s; line-height:1.5;" placeholder="Ej: 1.1 La identidad personal, 1.2 Factores que influyen en la identidad, 1.3 Identidad cultural y pertenencia..." onfocus="this.style.borderColor='var(--yellow)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+      </div>
+
+      <div style="background:var(--surface2); padding:10px 14px; border-radius:8px; border:1px dashed #8b5cf6; margin-bottom:20px;">
+        <label style="color:#a78bfa; font-size:0.8rem; font-weight:800;">📚 Adjuntar Material Base (PDF) — Opcional</label>
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:8px;">
+          <input type="file" id="ai-pdf-file" accept="application/pdf" style="display:none;" onchange="handleAIPdfSelect(event)">
+          <button class="btn btn-secondary btn-sm" onclick="document.getElementById('ai-pdf-file').click()">📂 Seleccionar PDF</button>
+          <span id="ai-pdf-name" style="font-size:0.75rem; color:var(--muted); font-weight:700; word-break:break-all;">Ningún archivo seleccionado</span>
+        </div>
+        <p style="font-size:0.7rem; color:var(--muted); margin-top:6px; margin-bottom:0; line-height:1.3;">La IA leerá este documento y basará la clase estrictamente en su contenido.</p>
+      </div>
+
+      <button class="btn" id="btn-generate-ai" onclick="generateSessionWithAI()" style="width:100%; justify-content:center; background:var(--accent); color:#fff; font-size:1rem; font-weight:900; padding:14px; border-radius:10px; letter-spacing:0.3px;">
+        ✨ Generar Sesión Completa
+      </button>
+    </div>
+
+    <div class="panel" style="display:flex; flex-direction:column;">
+      <div class="fb" style="margin-bottom:15px;">
+        <div class="panel-title" style="margin:0;">📄 Propuesta de Sesión</div>
+        <div class="flex" style="gap:8px;">
+          <button class="btn btn-secondary btn-sm" onclick="copyAiOutput()">📋 Copiar</button>
+          <button class="btn btn-primary btn-sm" style="background:var(--primary);" onclick="downloadWord()">📥 Descargar en Word</button>
+        </div>
+      </div>
+      <div id="ai-output" style="flex:1; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:15px; font-size:0.85rem; line-height:1.6; overflow-y:auto; max-height:500px;">
+        <div style="color:var(--muted); text-align:center; padding: 40px 20px;">
+          <div style="font-size:3rem; margin-bottom:15px;">🤖</div>
+          Llena los datos a la izquierda y presiona Generar.<br>Tu sesión aparecerá aquí en segundos.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VISTA SALA -->
+<div id="sala-view" style="display:none; padding: 20px 24px; max-width: 1200px; margin: 0 auto;">
+  <div class="topbar" style="margin-bottom: 20px; border-radius: var(--radius);">
+    <div class="topbar-left">
+      <div class="group-title" style="color: var(--yellow);">☕ Sala de Docente</div>
+      <div class="master-date-nav">
+        <button class="btn btn-secondary btn-sm" onclick="changeMasterDay(-1)" style="padding: 4px 8px;">◀</button>
+        <div class="master-date-chip">
+          📅 <span id="sala-date-display"></span>
+          <input type="date" id="sala-date-picker" style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer;" onchange="setMasterDate(this.value)">
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="changeMasterDay(1)" style="padding: 4px 8px;">▶</button>
+        <button class="btn btn-primary btn-sm" onclick="setMasterDateHoy()" id="btn-sala-hoy" style="display:none; padding: 4px 8px;">Hoy</button>
+      </div>
+    </div>
+    <button class="btn btn-secondary btn-sm" onclick="goHome()">← Volver al Inicio</button>
+  </div>
+  <div class="panel">
+    <div class="panel-title">📅 Agenda Semanal Administrativa</div>
+    <p style="font-size:0.8rem; color:var(--muted); margin-bottom:15px;">Gestiona tus reuniones de colegiado, atención a padres, capacitaciones y trámites.</p>
+    <div class="planning-board-wrap">
+      <div class="planning-board" id="sala-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PORTFOLIO GRUPO PRINCIPAL -->
+<div id="portfolio" style="display:none;">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="group-title" id="grp-title">GRUPO</div>
+      
+      <div class="master-date-nav">
+        <button class="btn btn-secondary btn-sm" onclick="changeMasterDay(-1)" style="padding: 4px 8px;">◀</button>
+        <div class="master-date-chip">
+          📅 <span id="master-date-display"></span>
+          <input type="date" id="master-date-picker" style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer;" onchange="setMasterDate(this.value)">
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="changeMasterDay(1)" style="padding: 4px 8px;">▶</button>
+        <button class="btn btn-primary btn-sm" onclick="setMasterDateHoy()" id="btn-master-hoy" style="display:none; padding: 4px 8px;">Hoy</button>
+      </div>
+
+      <div id="lock-controls" style="display:flex; align-items:center; gap:8px;">
+        <button class="btn-close-class" id="btn-cerrar-clase" onclick="openModal('mCloseClass')">🛑 Cerrar Clase</button>
+        <span id="lbl-clase-cerrada" style="display:none; font-size:0.75rem; font-weight:900; color:var(--muted); text-transform:uppercase; border: 1.5px dashed var(--border); padding: 6px 10px; border-radius: 8px; letter-spacing:0.5px; background:var(--surface2);">🔒 Clase Cerrada</span>
+        <button class="btn btn-secondary btn-sm" id="btn-desbloquear-clase" style="display:none; border-color:var(--primary); color:var(--primary); font-weight:800;" onclick="unlockClass()">🔓 Desbloquear Clase Cerrada</button>
+      </div>
+    </div>
+    <button class="btn btn-secondary btn-sm" onclick="goHome()">← Volver a Grupos</button>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon si-b">👥</div>
+      <div><div class="stat-label">Total Alumnos (Activos)</div><div class="stat-value" id="st-total">0</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon si-g">✅</div>
+      <div>
+        <div class="stat-label">Asistencia de la Fecha</div>
+        <div class="stat-value" id="st-pct">0%</div>
+        <div class="stat-sub">
+          <span class="c-p">✓ <span id="st-p">0</span></span>
+          <span class="c-t">⏰ <span id="st-t">0</span></span>
+          <span class="c-a">✗ <span id="st-a">0</span></span>
+          <span class="c-j">📄 <span id="st-j">0</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon si-r">⭐</div>
+      <div><div class="stat-label">Puntos Dados (Fecha)</div><div class="stat-value" id="st-alerts">0</div></div>
+    </div>
+  </div>
+
+  <div class="tabs-wrap">
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('asistencia')" data-tab="asistencia">📋 Asistencia</button>
+      <button class="tab" onclick="showTab('autorregulacion')" data-tab="autorregulacion" id="tab-autorregulacion">🟢 Conducta y Participación</button>
+      <button class="tab" onclick="showTab('planeador')" data-tab="planeador">📓 Diario Pedagógico</button>
+      <button class="tab" onclick="showTab('anecdotario')" data-tab="anecdotario">📖 Anecdotario</button>
+      <button class="tab" onclick="showTab('calificaciones')" data-tab="calificaciones">🎓 Calificaciones</button>
+      <button class="tab" onclick="showTab('reportes')" data-tab="reportes">📊 Reportes</button>
+      <button class="tab" onclick="showTab('dinamicas')" data-tab="dinamicas">🎲 Dinámicas</button>
+      <button class="tab" onclick="showTab('tareas')" data-tab="tareas">📝 Registro de Tareas</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="section active" id="sec-asistencia">
+
+      <div class="panel">
+        <div class="fb" style="margin-bottom:10px; flex-wrap:wrap; gap:10px;">
+          <div class="panel-title" style="margin:0;">📋 Asistencia y Emociones de la Fecha</div>
+          <div style="font-size:0.75rem; color:var(--muted);"><span style="margin-right:8px;">Registro socioemocional:</span> 😄 Feliz 😐 Neutral 😔 Triste 😴 Cansado 😡 Molesto</div>
+        </div>
+
+        <!-- Barra de progreso y acciones rápidas -->
+        <div style="background:var(--surface2); border-radius:10px; padding:12px 14px; margin-bottom:14px; display:flex; flex-direction:column; gap:10px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+            <div style="font-size:0.75rem; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px;">Progreso del llamado</div>
+            <div id="att-progress-label" style="font-size:0.78rem; font-weight:900; color:var(--primary-light);">0 / 0 marcados</div>
+          </div>
+          <div style="background:var(--surface3); border-radius:6px; height:8px; overflow:hidden;">
+            <div id="att-progress-bar" style="height:100%; background:linear-gradient(90deg, var(--primary), var(--accent)); border-radius:6px; width:0%; transition:width 0.3s ease;"></div>
+          </div>
+          <!-- Acciones rápidas -->
+          <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+            <span style="font-size:0.7rem; font-weight:800; color:var(--muted); text-transform:uppercase;">Acción rápida:</span>
+            <button class="att-btn aP" onclick="markAllAs('p')" style="font-size:0.72rem; padding:5px 12px;">✅ Todos presentes</button>
+            <button class="att-btn aA" onclick="markAllAs('a')" style="font-size:0.72rem; padding:5px 12px;">❌ Todos ausentes</button>
+            <button class="att-btn" onclick="clearAllAtt()" style="font-size:0.72rem; padding:5px 12px; color:var(--muted);">⬜ Limpiar todo</button>
+          </div>
+        </div>
+
+        <div id="att-list"></div>
+        <div id="att-sum-wrap" style="display:none;"><hr style="margin:14px 0;"><div class="att-sum" id="att-sum"></div></div>
+
+        <!-- Botón avanzar a Conducta (aparece solo cuando lista está completa) -->
+        <div id="att-proceed-wrap" style="display:none; margin-top:16px; padding:14px 16px; background:rgba(34,197,94,0.08); border:1.5px solid rgba(34,197,94,0.4); border-radius:12px; display:none; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+          <div>
+            <div style="font-size:0.85rem; font-weight:800; color:var(--green);">✅ Lista completa</div>
+            <div style="font-size:0.75rem; color:var(--muted); margin-top:2px;">Todos los alumnos han sido marcados. Puedes continuar con conducta.</div>
+          </div>
+          <button class="cbtn cb-start" style="padding:10px 22px; font-size:0.85rem;" onclick="showTab('autorregulacion')">
+            🟢 Ir a Conducta y Participación →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="sec-autorregulacion">
+      <div class="panel" style="padding:14px 18px; margin-bottom:12px;">
+        <div class="panel-title" style="margin:0 0 12px 0;">🟢 Gestión de Conducta y Participación Diaria</div>
+        <div class="ar-summary-bar" id="ar-summary-bar">
+          <div class="ar-sum-pill"><div class="ar-sum-num" style="color:#22c55e;" id="ar-cnt-g">0</div><div class="ar-sum-lbl">🟢 Verde</div></div>
+          <div class="ar-sum-pill"><div class="ar-sum-num" style="color:#f59e0b;" id="ar-cnt-y">0</div><div class="ar-sum-lbl">🟡 Amarillo</div></div>
+          <div class="ar-sum-pill"><div class="ar-sum-num" style="color:#ef4444;" id="ar-cnt-r">0</div><div class="ar-sum-lbl">🔴 Rojo</div></div>
+          <div class="ar-sum-pill"><div class="ar-sum-num" id="ar-cnt-total">0</div><div class="ar-sum-lbl">Total Presentes</div></div>
+        </div>
+      </div>
+
+      <div class="ar-tabs">
+        <button class="ar-tab active" onclick="showArTab('live')">🎯 Estados y Puntos de la Fecha</button>
+        <button class="ar-tab" onclick="showArTab('grafico')">📊 Estadísticas</button>
+      </div>
+
+      <div class="ar-panel active" id="ar-panel-live"><div class="ar-grid" id="ar-grid"></div></div>
+
+      <div class="ar-panel" id="ar-panel-grafico">
+        <div class="panel" id="chart-panel-only" style="position:relative; margin-bottom: 12px;">
+          <div class="fb" style="margin-bottom:15px; align-items:flex-start;">
+            <div>
+              <div class="panel-title" style="margin:bottom:4px;">📊 Estadísticas de Comportamiento</div>
+              <p style="font-size:0.76rem;color:var(--muted);margin-bottom:0;">Evolución y acumulado de la clase.</p>
+            </div>
+            <div class="flex" style="gap:10px;">
+              <div style="background:var(--surface2); border-radius:8px; display:flex; padding:3px; border:1px solid var(--border);">
+                <button class="btn btn-sm" id="btn-stat-hoy" onclick="setStatsMode('hoy')" style="background:transparent; color:var(--muted); border-radius:6px; box-shadow:none;">Hoy</button>
+                <button class="btn btn-sm" id="btn-stat-sem" onclick="setStatsMode('semanal')" style="background:var(--primary); color:#fff; border-radius:6px; box-shadow:0 2px 4px rgba(0,0,0,0.2);">Semanal</button>
+                <button class="btn btn-sm" id="btn-stat-all" onclick="setStatsMode('acumulado')" style="background:transparent; color:var(--muted); border-radius:6px; box-shadow:none;">Acumulado</button>
+              </div>
+              <button class="btn btn-secondary btn-sm" id="btn-stat-max" onclick="toggleStatsMax()">🔲 Maximizar</button>
+            </div>
+          </div>
+          <div class="ar-chart-wrap"><canvas id="ar-chart"></canvas></div>
+        </div>
+        
+        <div class="panel" style="margin-bottom: 12px;">
+          <div class="panel-title" style="margin-bottom:12px; font-size:0.85rem;">💖 Radar Socioemocional del Salón</div>
+          <p style="font-size:0.75rem; color:var(--muted); margin-bottom:10px;">Distribución del estado de ánimo de los alumnos registrados según el filtro seleccionado (Hoy/Semanal/Acumulado).</p>
+          <div id="emo-stats-container"></div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <div class="panel" style="margin-bottom:0;">
+            <div class="panel-title" style="margin-bottom:12px; font-size:0.85rem;">🗣️ Ranking de Participación</div>
+            <div id="ar-part-ranking"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section" id="sec-planeador">
+      <div class="panel" style="padding:16px 20px; margin-bottom:12px;">
+        <div class="fb">
+          <div>
+            <div class="panel-title" style="margin:0;">📓 Diario Pedagógico Semanal</div>
+            <p style="font-size:0.75rem; color:var(--muted); margin-top:4px;">Vista semanal de sesiones. Haz clic en cualquier día de clase para <strong style="color:var(--text);">registrar o editar el resumen</strong> de esa sesión.</p>
+          </div>
+        </div>
+      </div>
+      <div class="planning-board-wrap">
+        <svg id="arrows-svg"></svg>
+        <div class="planning-board" id="pb-grid"></div>
+      </div>
+
+    </div>
+
+    <div class="section" id="sec-anecdotario">
+      <div class="panel" style="margin-bottom:14px; border-color: rgba(236,72,153,0.35); background: rgba(236,72,153,0.03);">
+        <div class="fb" style="align-items:flex-start; flex-wrap:wrap; gap:12px;">
+          <div>
+            <div class="panel-title" style="margin:0; color:#f472b6;">📖 Anecdotario — Memoria Viva del Estudiante</div>
+            <p style="font-size:0.76rem; color:var(--muted); margin-top:5px; max-width:680px; line-height:1.5;">Instrumento de observación cualitativa. Registra ocurrencias en clase, intervenciones del docente y evidencias para tutoría. Permite hablar con <strong style="color:var(--text);">hechos concretos</strong> en reuniones con padres o psicólogos.</p>
+          </div>
+          <button class="btn" style="background:#ec4899; color:#fff; border:none; flex-shrink:0;" onclick="openAnecModal()">✏️ Nueva Entrada</button>
+        </div>
+      </div>
+
+      <div class="anec-stat-row" id="anec-stat-row"></div>
+
+      <div class="anec-tabs">
+        <button class="anec-tab active" onclick="showAnecTab('todas', this)">📋 Todas</button>
+        <button class="anec-tab" onclick="showAnecTab('por-alumno', this)">👤 Por Alumno</button>
+        <button class="anec-tab" onclick="showAnecTab('tutoria', this)">🤝 Evidencias de Tutoría</button>
+      </div>
+
+      <div class="anec-panel active" id="anec-panel-todas">
+        <div class="anec-filter-bar">
+          <span style="font-size:0.72rem; font-weight:800; color:var(--muted);">Filtrar por tipo:</span>
+          <button class="anec-filter-chip active" onclick="filterAnec('all', this)">Todas</button>
+          <button class="anec-filter-chip" onclick="filterAnec('positivo', this)">🌟 Positivo</button>
+          <button class="anec-filter-chip" onclick="filterAnec('negativo', this)">⚠️ Negativo</button>
+          <button class="anec-filter-chip" onclick="filterAnec('salud', this)">🏥 Salud</button>
+          <button class="anec-filter-chip" onclick="filterAnec('intervencion', this)">🛠️ Intervención</button>
+          <button class="anec-filter-chip" onclick="filterAnec('tutoria', this)">🤝 Tutoría</button>
+          <button class="anec-filter-chip" onclick="filterAnec('neutro', this)">📝 Otro</button>
+        </div>
+        <div id="anec-list-todas"></div>
+      </div>
+
+      <div class="anec-panel" id="anec-panel-por-alumno">
+        <div style="margin-bottom:12px;">
+          <select id="anec-student-filter" onchange="renderAnecPorAlumno()" style="max-width:360px;">
+            <option value="">-- Selecciona un alumno --</option>
+          </select>
+        </div>
+        <div id="anec-list-alumno"></div>
+      </div>
+
+      <div class="anec-panel" id="anec-panel-tutoria">
+        <div style="background:rgba(139,92,246,0.08); border:1px solid rgba(139,92,246,0.25); border-radius:10px; padding:12px 16px; margin-bottom:14px;">
+          <div style="font-size:0.8rem; font-weight:800; color:#a78bfa; margin-bottom:4px;">🤝 Insumo para Tutoría</div>
+          <div style="font-size:0.75rem; color:var(--muted);">Entradas marcadas como evidencias de tutoría o intervención docente, para usar en reuniones con padres o psicólogos.</div>
+        </div>
+        <div id="anec-list-tutoria"></div>
+      </div>
+    </div>
+
+
+    <div class="section" id="sec-calificaciones">
+      <div class="panel">
+        <div class="fb" style="margin-bottom:14px;">
+          <div class="panel-title" style="margin:0;">🎓 Registro de Calificaciones</div>
+          <div class="flex" style="flex-wrap:wrap;gap:8px;">
+            <input type="text" id="g-criteria" placeholder="Criterio (ej: Examen U1)" style="width:200px;">
+            <button class="btn btn-success btn-sm" onclick="saveGrades()">💾 Guardar</button>
+          </div>
+        </div>
+        <div id="grade-list"></div>
+      </div>
+    </div>
+
+    <div class="section" id="sec-reportes">
+      <!-- Panel de descarga de reportes SIAGIE -->
+      <div class="report-download-panel" style="margin-bottom:16px;">
+        <div class="fb" style="margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+          <div>
+            <div class="panel-title" style="margin:0; font-size:0.85rem;">📥 Descargar Reporte de Asistencia</div>
+            <p style="font-size:0.72rem; color:var(--muted); margin:3px 0 0 0;">Formato oficial Word (.doc) compatible con SIAGIE — MINEDU Perú.</p>
+          </div>
+        </div>
+        <div class="report-btns-grid">
+          <button class="report-dl-btn rdb-daily" onclick="downloadAttReport('daily')">
+            <span class="rdb-icon">📄</span>
+            <span>Reporte Diario</span>
+            <span style="font-size:0.65rem; font-weight:600; opacity:0.7; text-transform:none;">Word · Fecha actual</span>
+          </button>
+          <button class="report-dl-btn rdb-weekly" onclick="downloadAttReport('weekly')">
+            <span class="rdb-icon">📅</span>
+            <span>Reporte Semanal</span>
+            <span style="font-size:0.65rem; font-weight:600; opacity:0.7; text-transform:none;">Word · Semana en curso</span>
+          </button>
+          <button class="report-dl-btn rdb-monthly" onclick="downloadAttReport('monthly')">
+            <span class="rdb-icon">📊</span>
+            <span>Reporte Mensual</span>
+            <span style="font-size:0.65rem; font-weight:600; opacity:0.7; text-transform:none;">Word · Mes en curso</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section" id="sec-dinamicas">
+      <div class="panel">
+        <div class="panel-title" style="margin-bottom:15px;">🎲 Dinámicas de Selección Aleatoria</div>
+        <div class="ar-tabs" style="margin-bottom: 25px;">
+          <button class="ar-tab dyn-tab active" id="tab-dyn-ruleta" onclick="switchDynamic('ruleta')">⭕ Ruleta Clásica</button>
+          <button class="ar-tab dyn-tab" id="tab-dyn-slot" onclick="switchDynamic('slot')">🎰 Tragamonedas</button>
+        </div>
+        <div class="panel-grid-2">
+          <div id="dyn-visualizer" style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:350px;">
+            <div id="rlt-msg" style="color:var(--muted);padding:40px;text-align:center;background:var(--surface2);border-radius:10px; width:100%;">Cargando alumnos...</div>
+            <div class="ruleta-wrap" id="wrap-ruleta" style="display:none;">
+              <div id="canvas-wrap"><div id="rlt-arrow">▼</div><canvas id="rouletteCanvas" width="300" height="300"></canvas></div>
+              <button class="spin-btn" id="spin-btn-ruleta" onclick="spinRoulette()">🎲 ¡GIRAR RULETA!</button>
+            </div>
+            <div class="slot-wrap" id="wrap-slot" style="display:none;">
+              <div class="slot-machine"><div class="slot-strip" id="slot-strip"></div></div>
+              <button class="spin-btn" id="spin-btn-slot" onclick="spinSlot()">🎰 ¡TIRAR PALANCA!</button>
+            </div>
+          </div>
+          <div class="students-panel">
+            <div class="fb" style="margin-bottom:14px; align-items: center;">
+              <div class="flex" style="gap:8px;">
+                <button class="btn btn-secondary btn-sm" onclick="actionRltStudents('all')">✔️ TODOS</button>
+                <button class="btn btn-secondary btn-sm" onclick="actionRltStudents('none')">❌ NINGUNO</button>
+              </div>
+              <div style="font-weight: 800; color: var(--yellow); font-size: 0.9rem;"><span id="rlt-sel-count">0</span> / <span id="rlt-total-count">0</span></div>
+            </div>
+            <div id="rlt-student-list" class="students-list-container"></div>
+          </div>
+        </div>
+        <div class="rlt-history-container">
+          <div class="fb" style="align-items: center; margin-bottom: 5px;">
+            <div class="history-title" style="margin:0;">📜 Historial de Ganadores</div>
+            <button class="btn btn-danger btn-xs" onclick="actionRltWinner('clearHistory')">Limpia historial</button>
+          </div>
+          <div id="rlt-history-list"></div>
+        </div>
+      </div>
+
+      <!-- ⏱ TEMPORIZADOR integrado en Dinámicas -->
+      <div class="panel" id="timer-panel" style="margin-top:16px;">
+        <div class="panel-title">⏱ Temporizador de Clase</div>
+        <div class="timer-setup" id="timer-setup">
+          <input type="number" id="t-min" class="timer-inp" value="05" min="0" max="99">
+          <div class="timer-sep">:</div>
+          <input type="number" id="t-sec" class="timer-inp" value="00" min="0" max="59">
+        </div>
+        <div class="clock-display" id="clock">05 : 00</div>
+        <div class="clock-btns">
+<button id="btn-t-start" class="cbtn cb-start">▶ Iniciar</button>
+<button id="btn-t-pause" class="cbtn cb-pause" style="display:none;">⏸ Pausa</button>
+<button id="btn-t-reset" class="cbtn cb-reset">⏹ Reiniciar</button>          
+          <button class="cbtn cb-max" id="btn-t-max" onclick="toggleTimerMax()">🔲 Maximizar</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+    <!-- ======================= REGISTRO DE TAREAS ======================= -->
+    <div class="section" id="sec-tareas">
+
+      <!-- Barra de estadísticas -->
+      <div class="tarea-stat-row" id="tareas-stat-row">
+        <div class="tarea-stat-pill"><div class="tarea-stat-n" id="ts-total">0</div><div class="tarea-stat-l">Total Tareas</div></div>
+        <div class="tarea-stat-pill"><div class="tarea-stat-n tb-individual" id="ts-ind">0</div><div class="tarea-stat-l">Individuales</div></div>
+        <div class="tarea-stat-pill"><div class="tarea-stat-n tb-grupal" id="ts-grp">0</div><div class="tarea-stat-l">Grupales</div></div>
+        <div class="tarea-stat-pill"><div class="tarea-stat-n" style="color:var(--yellow);" id="ts-pend">0</div><div class="tarea-stat-l">Pendientes</div></div>
+        <div class="tarea-stat-pill"><div class="tarea-stat-n" style="color:var(--green);" id="ts-done">0</div><div class="tarea-stat-l">Entregadas</div></div>
+      </div>
+
+      <!-- Cabecera + botón nueva tarea -->
+      <div class="panel" style="margin-bottom:14px; padding:14px 18px;">
+        <div class="fb" style="flex-wrap:wrap; gap:10px; align-items:center;">
+          <div>
+            <div class="panel-title" style="margin:0;">📝 Registro de Tareas</div>
+            <p style="font-size:0.75rem;color:var(--muted);margin:4px 0 0 0;">Tareas individuales y grupales del grupo. CRUD completo.</p>
+          </div>
+          <button class="btn btn-primary" onclick="abrirModalNuevaTarea()">➕ Nueva Tarea</button>
+        </div>
+
+        <!-- Filtros -->
+        <div class="tarea-filter-bar" style="margin-top:14px; margin-bottom:0;">
+          <span style="font-size:0.7rem;font-weight:800;color:var(--muted);">Filtrar:</span>
+          <button class="tarea-filter-chip active" onclick="filtrarTareas('todas',this)">Todas</button>
+          <button class="tarea-filter-chip" onclick="filtrarTareas('individual',this)">👤 Individual</button>
+          <button class="tarea-filter-chip" onclick="filtrarTareas('grupal',this)">👥 Grupal</button>
+          <button class="tarea-filter-chip" onclick="filtrarTareas('pendiente',this)">⏳ Pendientes</button>
+          <button class="tarea-filter-chip" onclick="filtrarTareas('entregado',this)">✅ Entregadas</button>
+          <button class="tarea-filter-chip" onclick="filtrarTareas('vencido',this)">🔴 Vencidas</button>
+        </div>
+      </div>
+
+      <!-- Lista de tareas -->
+      <div id="tareas-lista"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+
+<!-- ============================================================ -->
+<!-- MODAL: REGISTRO DE TAREA (CREAR / EDITAR)                    -->
+<!-- ============================================================ -->
+<div class="modal-overlay" id="mNuevaTarea">
+  <div class="modal" style="max-width:640px;">
+
+    <!-- Header -->
+    <div class="fb" style="margin-bottom:4px; align-items:flex-start;">
+      <div class="modal-title" id="mnt-title" style="color:var(--primary-light); margin:0;">📝 Nueva Tarea</div>
+      <button class="btn btn-danger btn-sm" id="mnt-btn-delete" onclick="eliminarTarea()" style="display:none; flex-shrink:0;">🗑 Eliminar</button>
+    </div>
+    <input type="hidden" id="mnt-edit-id" value="">
+
+    <!-- Fecha de asignación + entrega -->
+    <div class="grid-2" style="gap:10px; margin-bottom:12px;">
+      <div class="form-group" style="margin:0;">
+        <label>📅 Fecha de Asignación</label>
+        <input type="date" id="mnt-fecha-asig">
+      </div>
+      <div class="form-group" style="margin:0;">
+        <label>⏰ Fecha de Entrega</label>
+        <input type="date" id="mnt-fecha-entrega">
+      </div>
+    </div>
+
+    <!-- Consigna -->
+    <div class="form-group" style="margin-bottom:12px;">
+      <label>📋 Consigna / Descripción de la Tarea <span style="color:var(--red);">*</span></label>
+      <textarea id="mnt-consigna" rows="3" placeholder="Describe claramente la tarea, materiales necesarios, indicaciones..."></textarea>
+    </div>
+
+    <!-- Tipo de trabajo -->
+    <div class="form-group" style="margin-bottom:14px;">
+      <label>🎯 Tipo de Trabajo</label>
+      <div class="grp-tipo-selector">
+        <button class="grp-tipo-btn active-ind" id="btn-tipo-ind" onclick="seleccionarTipoTarea('individual')">👤 Individual</button>
+        <button class="grp-tipo-btn" id="btn-tipo-grp" onclick="seleccionarTipoTarea('grupal')">👥 Grupal</button>
+      </div>
+    </div>
+
+    <!-- ZONA GRUPAL (se muestra solo si tipo=grupal) -->
+    <div id="zona-grupal" style="display:none;">
+      <div style="background:rgba(16,185,129,0.06); border:1.5px dashed rgba(16,185,129,0.4); border-radius:12px; padding:14px; margin-bottom:12px;">
+
+        <!-- Controles de cantidad de grupos -->
+        <div class="fb" style="flex-wrap:wrap; gap:10px; margin-bottom:12px; align-items:center;">
+          <div>
+            <div style="font-size:0.75rem; font-weight:900; color:var(--accent); text-transform:uppercase; letter-spacing:0.5px;">⚙️ Configurar Grupos</div>
+            <div style="font-size:0.7rem; color:var(--muted); margin-top:2px;">Los integrantes se distribuyen automáticamente o edítalos manualmente.</div>
+          </div>
+          <div class="flex" style="gap:8px; align-items:center; flex-wrap:wrap;">
+            <label style="font-size:0.72rem; font-weight:800; color:var(--muted); margin:0;">N° de grupos:</label>
+            <div class="group-count-ctrl">
+              <button onclick="cambiarCantGrupos(-1)">−</button>
+              <span id="mnt-num-grupos">3</span>
+              <button onclick="cambiarCantGrupos(1)">+</button>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="autoDistribuirGrupos()" title="Distribuye alumnos aleatoriamente">🔀 Auto-distribuir</button>
+          </div>
+        </div>
+
+        <!-- Constructor de grupos -->
+        <div class="grp-builder" id="mnt-grp-builder"></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('mNuevaTarea')">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarTarea()">💾 Guardar Tarea</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- MODAL: VER DETALLE TAREA                                      -->
+<!-- ============================================================ -->
+<div class="modal-overlay" id="mDetalleTarea">
+  <div class="modal" style="max-width:600px;">
+    <div class="fb" style="margin-bottom:4px; align-items:flex-start; flex-wrap:wrap; gap:8px;">
+      <div class="modal-title" id="mdt-titulo" style="margin:0; flex:1;"></div>
+      <div class="flex" style="gap:6px; flex-shrink:0;">
+        <button class="btn btn-secondary btn-sm" onclick="editarTareaDesdeDetalle()">✏️ Editar</button>
+        <button class="btn btn-secondary btn-sm" onclick="closeModal('mDetalleTarea')">✕ Cerrar</button>
+      </div>
+    </div>
+    <div id="mdt-body" style="margin-top:12px;"></div>
+  </div>
+</div>
+
+<!-- MODAL: CONFIGURACIÓN -->
+<div class="modal-overlay" id="mSettings">
+  <div class="modal">
+    <div class="modal-title">⚙️ Configuración del Sistema</div>
+    <div class="form-group" style="margin-bottom: 20px;">
+      <label>API KEY DE GEMINI (Google AI)</label>
+      <input type="password" id="cfg-api-key" placeholder="Pega tu API Key aquí">
+      <p style="font-size: 0.65rem; color: var(--muted); margin-top: 5px;">Tu llave se guarda localmente y no se comparte. Consíguela gratis en <a href="https://aistudio.google.com/" target="_blank" style="color: var(--primary);">Google AI Studio</a>.</p>
+    </div>
+
+    <!-- GOOGLE DRIVE CLIENT ID -->
+    <div style="border-top:1px solid var(--border); padding-top:16px; margin-bottom:20px;">
+      <div style="font-size:0.75rem; font-weight:800; color:#4285f4; margin-bottom:10px; display:flex; align-items:center; gap:6px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Google Drive — Client ID OAuth 2.0
+      </div>
+      <div class="form-group" style="margin-bottom:8px;">
+        <label>Client ID <span style="color:var(--muted); font-weight:500;">(de Google Cloud Console)</span></label>
+        <input type="text" id="cfg-gdrive-client-id" placeholder="xxxxxxxxxxxx-xxxxxxxxxxxxxxxx.apps.googleusercontent.com">
+      </div>
+      <div style="background:rgba(66,133,244,0.07); border:1px solid rgba(66,133,244,0.2); border-radius:8px; padding:10px 12px;">
+        <div style="font-size:0.68rem; color:var(--muted); line-height:1.6;">
+          <strong style="color:var(--text);">Pasos para obtener tu Client ID:</strong><br>
+          1. Ve a <a href="https://console.cloud.google.com/" target="_blank" style="color:#4285f4;">console.cloud.google.com</a><br>
+          2. Crea un proyecto → Activa la <strong>Google Drive API</strong><br>
+          3. Ve a <em>Credenciales → Crear → ID de cliente OAuth 2.0</em><br>
+          4. Tipo: <strong>Aplicación web</strong><br>
+          5. En "Orígenes permitidos" agrega: <code style="background:var(--surface3); padding:1px 5px; border-radius:4px;">file://</code> y la URL donde usas la app<br>
+          6. Copia el Client ID y pégalo arriba
+        </div>
+      </div>
+    </div>
+
+    <!-- GOOGLE DRIVE FILE ID (para restaurar en otro dispositivo) -->
+    <div style="border-top:1px solid var(--border); padding-top:16px; margin-bottom:20px;">
+      <div style="font-size:0.75rem; font-weight:800; color:#4285f4; margin-bottom:10px; display:flex; align-items:center; gap:6px;">
+        📂 Google Drive — File ID del Backup
+      </div>
+      <div class="form-group" style="margin-bottom:8px;">
+        <label>File ID <span style="color:var(--muted); font-weight:500;">(opcional · para restaurar en otro dispositivo)</span></label>
+        <input type="text" id="cfg-gdrive-file-id" placeholder="Pega aquí el ID largo del archivo en Drive">
+      </div>
+      <div style="background:rgba(66,133,244,0.07); border:1px solid rgba(66,133,244,0.2); border-radius:8px; padding:10px 12px;">
+        <div style="font-size:0.68rem; color:var(--muted); line-height:1.7;">
+          <strong style="color:var(--text);">¿Cómo obtener el File ID?</strong><br>
+          1. Abre tu <a href="https://drive.google.com" target="_blank" style="color:#4285f4;">Google Drive</a> en el navegador<br>
+          2. Busca el archivo <code style="background:var(--surface3); padding:1px 5px; border-radius:4px;">Bitacorap_Backup.json</code><br>
+          3. Haz clic derecho → <strong>Compartir</strong> o <strong>Obtener enlace</strong><br>
+          4. En la URL encontrarás algo como: <code style="background:var(--surface3); padding:1px 5px; border-radius:4px;">/d/<strong>1A2B3C...xyz</strong>/view</code><br>
+          5. Copia solo esa cadena larga y pégala arriba<br>
+          <span style="color:var(--accent);">💡 Solo necesitas hacer esto una vez en cada dispositivo nuevo.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer fb">
+      <button class="btn btn-secondary" onclick="closeModal('mSettings')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveSettings()">Guardar Configuración</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="mNewGroup">
+  <div class="modal">
+    <div class="modal-title">👥 Nuevo Grupo</div>
+    <div class="form-group"><label>Nombre del grupo</label><input type="text" id="ng-name" placeholder="Ej: DPCC"></div>
+    <div class="form-group"><label>Nivel</label><input type="text" value="Secundaria" readonly style="color: var(--muted); cursor: not-allowed; background: var(--surface3);"></div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Grado</label>
+        <select id="ng-grade">
+          <option value="1°">1°</option><option value="2°">2°</option><option value="3°">3°</option><option value="4°">4°</option><option value="5°">5°</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Sección</label>
+        <select id="ng-sec"><option value="A">A</option><option value="B">B</option></select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Días que se dicta clases (Marca los días)</label>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; background:var(--surface2); padding:10px; border-radius:8px; border:1px solid var(--border);">
+        <label style="margin:0; text-transform:none;"><input type="checkbox" class="ng-day" value="1" checked> Lun</label>
+        <label style="margin:0; text-transform:none;"><input type="checkbox" class="ng-day" value="2"> Mar</label>
+        <label style="margin:0; text-transform:none;"><input type="checkbox" class="ng-day" value="3" checked> Mié</label>
+        <label style="margin:0; text-transform:none;"><input type="checkbox" class="ng-day" value="4"> Jue</label>
+        <label style="margin:0; text-transform:none;"><input type="checkbox" class="ng-day" value="5"> Vie</label>
+      </div>
+    </div>
+    <div class="form-group"><label>Lista de alumnos (uno por línea)</label><textarea id="ng-students" placeholder="APELLIDOS NOMBRES&#10;GARCIA LOPEZ JUAN&#10;PEREZ TORRES MARIA..."></textarea></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('mNewGroup')">Cancelar</button>
+      <button class="btn btn-primary" onclick="createGroup()">✅ Crear Grupo</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="mEditName">
+  <div class="modal">
+    <div class="modal-title">✏️ Editar Grupo</div>
+    <input type="hidden" id="edit-group-hidden-idx" value="">
+    <div class="form-group"><label>Nuevo nombre</label><input type="text" id="edit-name"></div>
+    <div class="form-group">
+      <label>Días que se dicta clases en este grupo</label>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; background:var(--surface2); padding:10px; border-radius:8px; border:1px solid var(--border);">
+        <label style="margin:0; text-transform:none;"><input type="checkbox" class="eg-day" value="1"> Lun</label>
+        <label style="margin:0; text-transform:none;"><input type="checkbox" class="eg-day" value="2"> Mar</label>
+        <label style="margin:0; text-transform:none;"><input type="checkbox" class="eg-day" value="3"> Mié</label>
+        <label style="margin:0; text-transform:none;"><input type="checkbox" class="eg-day" value="4"> Jue</label>
+        <label style="margin:0; text-transform:none;"><input type="checkbox" class="eg-day" value="5"> Vie</label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('mEditName')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveName()">Guardar Cambios</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="mManage">
+  <div class="modal" style="max-width: 550px;">
+    <div class="modal-title">👥 Gestionar Alumnos</div>
+    <p style="font-size:0.75rem; color:var(--muted); margin-bottom:12px;">Puedes editar, ordenar, retirar o eliminarlos definitivamente.</p>
+    
+    <div class="form-group" style="margin-bottom: 12px;">
+      <input type="text" id="search-student-inp" placeholder="🔍 Buscar alumno por nombre o apellido..." oninput="renderManageList()">
+    </div>
+    
+    <div id="manage-list" style="max-height: 350px; overflow-y: auto; padding-right: 5px;"></div>
+    
+    <hr>
+    <div class="form-group"><label>Agregar alumno</label>
+      <div class="flex"><input type="text" id="add-inp" placeholder="Nombre completo"><button class="btn btn-success btn-sm" onclick="addStudent()" style="flex-shrink:0;">+ Agregar</button></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" onclick="deleteGroup()" style="margin-right:auto;">🗑 Eliminar Grupo</button>
+      <button class="btn btn-primary" onclick="closeMManage()">Listo</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="mSessionPlan">
+  <div class="modal" style="max-width:580px;">
+    <div class="fb" style="margin-bottom:4px;align-items:flex-start;">
+      <div class="modal-title" id="spm-title" style="margin:0;">📓 Registro de Sesión</div>
+      <button class="btn btn-danger btn-sm" id="spm-btn-delete" onclick="deleteSession()" style="display:none;flex-shrink:0;">🗑 Eliminar</button>
+    </div>
+    <div id="spm-day-badge" class="sm-day-badge" style="margin-bottom:14px;"></div>
+
+    <div class="sm-section-title">📖 Resumen / Desarrollo de la sesión</div>
+    <div class="form-group" style="margin-bottom:16px;">
+      <textarea id="spm-summary" rows="6" placeholder="¿Qué se trabajó hoy? Tema, metodología, logros, dificultades..."></textarea>
+    </div>
+
+    <div class="modal-footer fb" style="margin-top:18px;">
+      <button class="btn btn-secondary" onclick="closeSessionModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveSession()">💾 Guardar sesión</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: GRUPOS DE TAREA — CRUD completo -->
+<div class="modal-overlay" id="mTaskGroups">
+  <div class="modal" style="max-width:640px;">
+    <div class="fb" style="margin-bottom:4px;align-items:flex-start;">
+      <div>
+        <div class="modal-title" style="color:var(--accent);margin:0;">👥 Grupos de la tarea</div>
+        <div id="tg-task-label" style="font-size:0.74rem;color:var(--muted);margin-top:3px;font-style:italic;max-width:400px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></div>
+      </div>
+      <button class="btn btn-sm" style="background:var(--accent);color:#fff;border:none;flex-shrink:0;" onclick="tgStartNew()">
+        ＋ Nuevo grupo
+      </button>
+    </div>
+    <div id="tg-summary-bar" style="font-size:0.72rem;color:var(--muted);margin-bottom:12px;padding:6px 10px;background:var(--surface2);border-radius:7px;"></div>
+
+    <!-- Lista de grupos ya creados -->
+    <div id="tg-groups-list" style="max-height:260px;overflow-y:auto;margin-bottom:12px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;"></div>
+
+    <!-- Formulario inline para crear/editar un grupo -->
+    <div id="tg-form-wrap" style="display:none;background:var(--surface2);border:1.5px dashed var(--accent);border-radius:12px;padding:16px;margin-bottom:4px;">
+      <div class="fb" style="margin-bottom:12px;">
+        <div style="font-size:0.75rem;font-weight:900;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;" id="tg-form-title">➕ Nuevo grupo</div>
+        <button onclick="tgCancelEdit()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.72rem;font-weight:800;text-transform:uppercase;">✕ Cancelar</button>
+      </div>
+      <input type="hidden" id="tg-edit-idx" value="-1">
+
+      <div class="form-group" style="margin-bottom:10px;">
+        <label>Nombre del grupo</label>
+        <input type="text" id="tg-fname" placeholder="Ej: Grupo Alpha, Equipo 1, Los Investigadores...">
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:6px;">
+        <label style="margin:0;font-size:0.7rem;">👥 Integrantes <span style="color:var(--muted);font-weight:600;">(uno por línea)</span></label>
+        <button class="btn btn-sm" style="background:var(--accent);color:#fff;border:none;font-size:0.68rem;padding:4px 10px;border-radius:6px;" onclick="openStudentPickerForTG()">
+          📋 Seleccionar de la lista
+        </button>
+      </div>
+      <textarea class="session-group-members" id="tg-fmembers" rows="4"
+        placeholder="GARCIA LOPEZ JUAN&#10;TORRES QUISPE MARIA&#10;QUISPE MAMANI PEDRO..."></textarea>
+
+      <div class="form-group" style="margin-bottom:10px;">
+        <label>💬 Observación / Recomendación</label>
+        <textarea class="session-group-obs" id="tg-fobs" rows="2"
+          placeholder="Ej: Buen trabajo en equipo. Mejorar la redacción del informe..."></textarea>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:110px;">
+          <label>🎯 Nota (0 – 20)</label>
+          <input type="number" id="tg-fgrade" min="0" max="20" placeholder="--"
+            style="background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-family:'Roboto Mono',monospace;font-size:1rem;font-weight:900;width:100%;outline:none;-moz-appearance:textfield;transition:border-color 0.15s;"
+            oninput="updateTGFormAlpha()">
+        </div>
+        <div style="padding-top:18px;">
+          <div id="tg-falpha" class="group-alpha-badge grp-badge-empty">--</div>
+        </div>
+        <div style="padding-top:18px;flex:1;min-width:120px;">
+          <button class="btn btn-sm" id="tg-btn-save-group" onclick="tgSaveGroup()"
+            style="background:var(--accent);color:#fff;border:none;width:100%;justify-content:center;padding:10px;">
+            ✅ Guardar grupo
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer fb" style="margin-top:16px;">
+      <button class="btn btn-secondary" onclick="cancelTaskGroups()">Cancelar</button>
+      <button class="btn" style="background:var(--accent);color:#fff;border:none;" onclick="confirmTaskGroups()">✅ Confirmar y cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="mRedObs">
+  <div class="modal" style="max-width:480px;">
+    <div class="modal-title" style="color:#ef4444;">🔴 Registrar Observación</div>
+    <div id="mRedObs-student" style="font-size:0.88rem;font-weight:800;margin-bottom:4px;"></div>
+    <div style="font-size:0.75rem;color:var(--muted);margin-bottom:16px;">El alumno ha sido marcado en <strong style="color:#ef4444;">ROJO</strong>. Registra qué ocurrió para el seguimiento.</div>
+    <div class="form-group">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+        <label style="margin:0;">¿Qué sucedió? (observación)</label>
+      </div>
+      <textarea id="mRedObs-txt" rows="3" placeholder="Ej: Interrumpió la clase reiteradamente, faltó el respeto a un compañero..."></textarea>
+    </div>
+    <div class="modal-footer fb">
+      <button class="btn btn-secondary" onclick="saveRedObs(false)">Omitir observación</button>
+      <button class="btn btn-danger" onclick="saveRedObs(true)">🔴 Guardar observación</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="mCloseClass">
+  <div class="modal" style="max-width:400px; text-align: center;">
+    <div style="font-size: 3rem; margin-bottom: 10px;">🛑</div>
+    <div class="modal-title" style="color: var(--red); font-size: 1.3rem;">¿Cerrar Clase?</div>
+    <p style="font-size: 0.88rem; color: var(--muted); margin-bottom: 20px;">
+      ¿Estás seguro que deseas cerrar la sesión de la fecha seleccionada? Esto registrará permanentemente todos los cambios en el historial.
+    </p>
+    <div class="modal-footer" style="justify-content: center; gap: 15px;">
+      <button class="btn btn-secondary" onclick="closeModal('mCloseClass')">Cancelar</button>
+      <button class="btn btn-danger" onclick="confirmCloseClass()">Sí, Cerrar Clase</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="mSalaDay">
+  <div class="modal" style="max-width:540px;">
+    <div class="modal-title">☕ Agenda del Día</div>
+    <div id="sm-sala-badge" class="sm-day-badge" style="margin-bottom:15px; font-weight:800; color:var(--primary-light); font-size:0.9rem; padding:8px 12px; background:rgba(14,165,233,0.08); border-radius:8px; border-left:3px solid var(--primary);"></div>
+    <div style="margin-bottom:15px;">
+      <div style="font-size:0.72rem; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:8px;">📋 Eventos del día</div>
+      <div id="sala-event-list" style="max-height:280px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:var(--border) transparent;"></div>
+    </div>
+    <div id="sala-form-container" style="background:var(--surface2); border:1.5px dashed var(--yellow); border-radius:12px; padding:14px; margin-bottom:14px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <div id="sala-form-title" style="font-size:0.75rem;font-weight:900;color:var(--yellow);">➕ Nuevo Evento / Reunión</div>
+        <button id="sala-form-cancel-edit" onclick="cancelSalaEdit()" style="display:none; background:none; border:none; color:var(--muted); cursor:pointer; font-size:0.72rem; font-weight:800; text-transform:uppercase; letter-spacing:0.3px;">✕ Cancelar</button>
+      </div>
+      <div class="grid-2" style="margin-bottom:8px;">
+        <div class="form-group" style="margin:0;"><label>Hora</label><input type="time" id="se-time" style="background:var(--surface3);"></div>
+        <div class="form-group" style="margin:0;"><label>Tipo</label>
+          <select id="se-type" style="background:var(--surface3);">
+            <option value="colegiado">Reunión Colegiado</option><option value="padres">Atención a Padres</option>
+            <option value="admin">Trámite / Admin</option><option value="capacitacion">Capacitación</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:8px;"><label>Descripción del evento</label><textarea id="se-desc" rows="2" placeholder="Ej: Revisión de sílabos, Cita con mamá de Juan..." style="resize:none; min-height:58px; field-sizing:content;"></textarea></div>
+      <div class="form-group" style="margin-bottom:12px;"><label>Enlace de reunión virtual (Opcional)</label><input type="text" id="se-link" placeholder="Ej: https://meet.google.com/... o Zoom"></div>
+      <input type="hidden" id="se-edit-idx" value="-1">
+      <button class="btn btn-success btn-sm" id="sala-add-btn" onclick="addSalaEvent()" style="width:100%; justify-content:center; padding:10px;">➕ Agregar a la agenda</button>
+    </div>
+    <div class="modal-footer fb" style="margin-top:16px;">
+      <button class="btn btn-danger btn-sm" id="sm-btn-del-sala" onclick="deleteSalaDay()" style="display:none;">🗑 Borrar Todo</button>
+      <div class="flex" style="gap:10px; margin-left:auto;">
+        <button class="btn btn-secondary" onclick="closeSalaModal()">Cerrar</button>
+        <button class="btn btn-primary" onclick="saveSalaDay()">💾 Guardar Agenda</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="mRltWinner">
+  <div class="modal m-winner">
+    <div class="m-winner-trophy">🏆</div>
+    <div class="m-winner-name" id="rlt-winner-name-baloo">NOMBRE</div>
+    <div class="m-winner-text">¡Ha sido seleccionado/a!</div>
+    <div class="m-winner-btns">
+      <button class="btn btn-success btn-m-large" onclick="actionRltWinner('keep')">✅ Mantener en la lista</button>
+      <button class="btn btn-danger btn-m-large" onclick="actionRltWinner('remove')">🗑️ Quitar del próximo giro</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: SELECTOR DE INTEGRANTES PARA GRUPOS -->
+<div class="modal-overlay" id="mStudentPicker">
+  <div class="modal" style="max-width:620px;">
+    <div class="modal-title" style="color:var(--accent);">👥 Seleccionar Integrantes
+      <span id="spicker-group-label" style="font-size:0.75rem; font-weight:700; color:var(--muted); margin-left:8px;"></span>
+    </div>
+    <p style="font-size:0.75rem; color:var(--muted); margin-bottom:12px;">Selecciona los alumnos que formarán parte de este grupo. Están organizados por grado y sección.</p>
+    <input type="text" class="spicker-search" id="spicker-search" placeholder="🔍 Buscar alumno por nombre..." oninput="renderStudentPickerList()">
+    <div class="spicker-sel-bar">
+      <span class="spicker-sel-count" id="spicker-count">0 seleccionados</span>
+      <div class="spicker-sel-actions">
+        <button class="spicker-action-btn" onclick="pickerSelectAll()">✅ Seleccionar todos</button>
+        <button class="spicker-action-btn" onclick="pickerClearAll()">⬜ Limpiar</button>
+      </div>
+    </div>
+    <div style="max-height:380px; overflow-y:auto; padding-right:4px; scrollbar-width:thin; scrollbar-color:var(--border) transparent;" id="spicker-list"></div>
+    <div class="modal-footer" style="margin-top:16px;">
+      <button class="btn btn-secondary" onclick="closeModal('mStudentPicker')">Cancelar</button>
+      <button class="btn" style="background:var(--accent); color:#fff; border:none;" onclick="confirmStudentPicker()">✅ Agregar al grupo</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<!-- MODAL: EDITAR ALUMNO (mAlumno) -->
+<div class="modal-overlay" id="mAlumno">
+  <div class="modal" style="max-width:480px;">
+    <div class="modal-title" style="color:var(--primary-light);">✏️ Editar Alumno</div>
+    <input type="hidden" id="ma-group-idx">
+    <input type="hidden" id="ma-student-idx">
+
+    <div class="form-group" style="margin-bottom:14px;">
+      <label style="font-size:0.75rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;">Nombre completo</label>
+      <input type="text" id="ma-nombre" placeholder="Ej: GARCIA LOPEZ JUAN" style="font-weight:700;text-transform:uppercase;">
+    </div>
+
+    <div class="form-group" style="margin-bottom:14px;">
+      <label style="font-size:0.75rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;">🎂 Fecha de cumpleaños</label>
+      <input type="date" id="ma-cumple">
+    </div>
+
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;background:var(--surface2);padding:12px 14px;border-radius:10px;border:1.5px solid var(--border);">
+      <input type="checkbox" id="ma-retirado" style="width:18px;height:18px;accent-color:var(--red);cursor:pointer;">
+      <label for="ma-retirado" style="font-size:0.85rem;font-weight:700;cursor:pointer;">⏸ Alumno retirado <span style="font-size:0.7rem;color:var(--muted);font-weight:600;">(no aparece en listas activas)</span></label>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('mAlumno')">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarAlumno()">💾 Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: DATOS FAMILIA ESTUDIANTE -->
+<div class="modal-overlay" id="mFamilyData">
+  <div class="modal" style="max-width:580px;">
+    <div class="modal-title" style="color:#f472b6;">👨‍👩‍👧 Datos Familiares del Estudiante</div>
+    <div id="mfd-student-name" style="font-size:0.9rem; font-weight:900; color:var(--primary-light); text-transform:uppercase; margin-bottom:16px; padding:8px 12px; background:var(--surface2); border-radius:8px;"></div>
+    
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:14px;">
+      <div>
+        <div class="sm-section-title" style="color:var(--accent);">🪪 DNI Estudiante</div>
+        <input type="text" id="mfd-student-dni" placeholder="Ej: 12345678" maxlength="8" style="font-family:'Roboto Mono',monospace; letter-spacing:2px;">
+      </div>
+      <div>
+        <div class="sm-section-title" style="color:var(--primary-light);">📱 Teléfono Estudiante</div>
+        <input type="tel" id="mfd-student-phone" placeholder="Ej: 987654321">
+        <label style="display:flex; align-items:center; gap:8px; margin-top:6px; font-size:0.75rem; cursor:pointer; color:var(--muted); font-weight:700;">
+          <input type="checkbox" id="mfd-student-wa" style="width:auto; cursor:pointer; accent-color:#25d366;"> ¿Tiene WhatsApp?
+        </label>
+      </div>
+      <div>
+        <div class="sm-section-title" style="color:var(--yellow);">⭐ Responsable Principal</div>
+        <select id="mfd-responsible">
+          <option value="mama">Mamá</option>
+          <option value="papa">Papá</option>
+          <option value="apoderado">Apoderado(a)</option>
+        </select>
+        <div style="font-size:0.68rem; color:var(--muted); margin-top:5px;">Firma de autorizaciones y comunicados.</div>
+      </div>
+    </div>
+
+    <div class="sm-section-title" style="color:#f472b6;">👩 Datos de Mamá</div>
+    <div style="display:grid; grid-template-columns:1fr auto; gap:8px; align-items:end; margin-bottom:5px;">
+      <div class="form-group" style="margin:0;"><label>Nombre</label><input type="text" id="mfd-mama-name" placeholder="Nombre de la madre"></div>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr auto; gap:8px; align-items:end; margin-bottom:14px;">
+      <div class="form-group" style="margin:0;"><label>Teléfono</label><input type="tel" id="mfd-mama-phone" placeholder="987654321"></div>
+      <label style="display:flex; align-items:center; gap:6px; font-size:0.74rem; cursor:pointer; color:var(--muted); font-weight:700; white-space:nowrap; padding-bottom:9px;">
+        <input type="checkbox" id="mfd-mama-wa" style="width:auto; cursor:pointer; accent-color:#25d366;"> WhatsApp
+      </label>
+    </div>
+
+    <div class="sm-section-title" style="color:var(--primary-light);">👨 Datos de Papá</div>
+    <div style="display:grid; grid-template-columns:1fr auto; gap:8px; align-items:end; margin-bottom:5px;">
+      <div class="form-group" style="margin:0;"><label>Nombre</label><input type="text" id="mfd-papa-name" placeholder="Nombre del padre"></div>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr auto; gap:8px; align-items:end; margin-bottom:14px;">
+      <div class="form-group" style="margin:0;"><label>Teléfono</label><input type="tel" id="mfd-papa-phone" placeholder="987654321"></div>
+      <label style="display:flex; align-items:center; gap:6px; font-size:0.74rem; cursor:pointer; color:var(--muted); font-weight:700; white-space:nowrap; padding-bottom:9px;">
+        <input type="checkbox" id="mfd-papa-wa" style="width:auto; cursor:pointer; accent-color:#25d366;"> WhatsApp
+      </label>
+    </div>
+
+    <div class="sm-section-title" style="color:var(--accent);">🧑 Apoderado(a) Adicional (Opcional)</div>
+    <div class="form-group" style="margin-bottom:6px;"><label>Nombre</label><input type="text" id="mfd-apod-name" placeholder="Nombre del apoderado"></div>
+    <div style="display:grid; grid-template-columns:1fr auto; gap:8px; align-items:end; margin-bottom:14px;">
+      <div class="form-group" style="margin:0;"><label>Teléfono</label><input type="tel" id="mfd-apod-phone" placeholder="987654321"></div>
+      <label style="display:flex; align-items:center; gap:6px; font-size:0.74rem; cursor:pointer; color:var(--muted); font-weight:700; white-space:nowrap; padding-bottom:9px;">
+        <input type="checkbox" id="mfd-apod-wa" style="width:auto; cursor:pointer; accent-color:#25d366;"> WhatsApp
+      </label>
+    </div>
+    <input type="hidden" id="mfd-group-idx">
+    <input type="hidden" id="mfd-student-idx">
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('mFamilyData')">Cancelar</button>
+      <button class="btn" style="background:#ec4899; color:#fff; border:none;" onclick="saveFamilyData()">💾 Guardar Datos</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: NUEVA ENTRADA ANECDOTARIO -->
+<div class="modal-overlay" id="mAnecdotario">
+  <div class="modal" style="max-width:540px;">
+    <div class="modal-title" style="color:#f472b6;">📖 Nueva Entrada — Anecdotario</div>
+    <div class="grid-2" style="gap:10px; margin-bottom:12px;">
+      <div class="form-group" style="margin:0;">
+        <label>Alumno(a)</label>
+        <select id="anec-student-sel"></select>
+      </div>
+      <div class="form-group" style="margin:0;">
+        <label>Tipo de Ocurrencia</label>
+        <select id="anec-type-sel">
+          <option value="positivo">🌟 Comportamiento Positivo</option>
+          <option value="negativo">⚠️ Comportamiento Negativo</option>
+          <option value="salud">🏥 Salud / Bienestar</option>
+          <option value="intervencion">🛠️ Intervención Docente</option>
+          <option value="tutoria">🤝 Evidencia de Tutoría</option>
+          <option value="neutro">📝 Observación General</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>¿Qué ocurrió? — Describe el hecho con detalle</label>
+      <textarea id="anec-desc" rows="4" placeholder="Ej: Durante la clase de hoy, la estudiante Verónica manifestó dolor de estómago y estuvo mal todo el período. Se comunicó a coordinación..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Intervención / Medida tomada (Opcional)</label>
+      <textarea id="anec-intervencion" rows="2" placeholder="Ej: Se avisó a la auxiliar, se llamó a los padres. Se le permitió descansar en enfermería..."></textarea>
+    </div>
+    <div class="form-group" style="margin-bottom:6px;">
+      <label>Fecha</label>
+      <input type="date" id="anec-fecha">
+    </div>
+    <input type="hidden" id="anec-edit-idx" value="-1">
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" id="anec-btn-delete" onclick="deleteAnecEntry()" style="display:none; margin-right:auto;">🗑 Eliminar</button>
+      <button class="btn btn-secondary" onclick="closeModal('mAnecdotario')">Cancelar</button>
+      <button class="btn" style="background:#ec4899; color:#fff; border:none;" onclick="saveAnecEntry()">💾 Guardar Entrada</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- SCRIPTS EXTERNOS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="js/main.js"></script>
+</body>
+</html>
